@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Checkers</string>
+    <string name="computer_win">The computer wins!</string>
+    <string name="player_win">You win!</string>
+    <string name="jump_again">Jump again?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+</resources>
