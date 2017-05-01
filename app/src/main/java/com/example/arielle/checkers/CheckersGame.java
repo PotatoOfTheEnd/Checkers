@@ -59,6 +59,7 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
         }
         update();
     }
+    //does this work?
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
