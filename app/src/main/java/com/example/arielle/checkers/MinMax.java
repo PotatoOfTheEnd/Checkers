@@ -30,8 +30,10 @@ public class MinMax {
         boardState tpBoard;
         Move finalMove = new Move(0, 0, 1);
         if (player == 1){
-            if (p1turn.get(depth).containsKey(hashval)){
-                return (Move) p1turn.get(depth).get(hashval);
+            for(int i=p1turn.size()-1; i>=depth; i--) {
+                if (p1turn.get(i).containsKey(hashval)) {
+                    return p1turn.get(i).get(hashval);
+                }
             }
             bestScore = -100000000;
             for(int i=0; i<32; i++){
@@ -61,8 +63,10 @@ public class MinMax {
             return finalMove;
         }
         else{
-           if (p2turn.get(depth).containsKey(hashval)){
-                return (Move) p2turn.get(depth).get(hashval);
+            for(int i=p2turn.size()-1; i>=depth; i--) {
+                if (p2turn.get(i).containsKey(hashval)) {
+                    return p2turn.get(i).get(hashval);
+                }
             }
             bestScore = 100000000;
             for(int i=0; i<32; i++){
