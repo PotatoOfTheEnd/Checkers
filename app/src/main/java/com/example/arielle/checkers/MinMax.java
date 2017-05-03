@@ -22,58 +22,68 @@ public class MinMax {
     public Move getVal(boardState currentBoard, int player, int depth, int alpha, int beta){
         //player 1 maximizes, player 2 minimizes
         long hashval = 0, seed=1;
-        for(int i=0; i<32; i++){
+      /*  for(int i=0; i<32; i++){
             hashval+=currentBoard.getVal(i)*seed;
             seed*=13;
-        }
+        }*/
         int bestScore;
         boardState tpBoard;
         Move finalMove = new Move(0, 0, 1);
         if (player == 1){
-            for(int i=p1turn.size()-1; i>=depth; i--) {
+          /*  for(int i=p1turn.size()-1; i>=depth; i--) {
                 if (p1turn.get(i).containsKey(hashval)) {
                     return p1turn.get(i).get(hashval);
                 }
-            }
+            }*/
             bestScore = -100000000;
+            boolean done = false;
             for(int i=0; i<32; i++){
                 if (currentBoard.getCell(i).getPlayer()!=1){ continue; }
                 if (depth == 0){
                     if (currentBoard.getMoves(i).size()>0){
                         bestScore = currentBoard.evaluateBoard();
-                        break;
+                        done = true; break;
                     }
                     continue;
                 }
                 for(Move j: currentBoard.getMoves(i)){
                     tpBoard = new boardState(currentBoard.getCurrentBoard());
                     tpBoard.makeMove(j);
-                    int tmp = getVal(tpBoard, 2, depth-1, alpha, beta).getScore();
+                    if (tpBoard.haswon(1,2)){
+                        bestScore = 100000000;
+                        finalMove = j;
+                        done = true;
+                        break;
+                    }
+                    int tmp = getVal(tpBoard, 2, depth - 1, alpha, beta).getScore();
                     if (tmp >= bestScore){
                         finalMove = j;
                         bestScore = tmp;
                     }
                     alpha = Math.max(alpha, bestScore);
-                    if (alpha>=beta){ break; }
+                    if (alpha>beta){ done = true; break; }
                 }
+                if (done){ break; }
             }
 
             finalMove.setScore(bestScore);
-            p1turn.get(depth).put(hashval, finalMove);
+         //   p1turn.get(depth).put(hashval, finalMove);
             return finalMove;
         }
         else{
-            for(int i=p2turn.size()-1; i>=depth; i--) {
+         /*   for(int i=p2turn.size()-1; i>=depth; i--) {
                 if (p2turn.get(i).containsKey(hashval)) {
                     return p2turn.get(i).get(hashval);
                 }
-            }
+            }*/
+            boolean done = false;
             bestScore = 100000000;
             for(int i=0; i<32; i++){
                 if (currentBoard.getCell(i).getPlayer()!=2){ continue; }
                 if (depth == 0){
                     if (currentBoard.getMoves(i).size()>0){
                         bestScore = currentBoard.evaluateBoard();
+                        done = true;
                         break;
                     }
                     continue;
@@ -81,17 +91,24 @@ public class MinMax {
                 for(Move j: currentBoard.getMoves(i)){
                     tpBoard = new boardState(currentBoard.getCurrentBoard());
                     tpBoard.makeMove(j);
+                    if (tpBoard.haswon(2, 1)){
+                        bestScore = -100000000;
+                        finalMove = j;
+                        done = true;
+                        break;
+                    }
                     int tmp = getVal(tpBoard, 1, depth-1, alpha, beta).getScore();
                     if (tmp <= bestScore){
                         finalMove = j;
                         bestScore = tmp;
                     }
                     beta = Math.min(beta, bestScore);
-                    if (alpha>=beta){ break; }
+                    if (alpha>beta){ done = true; break; }
                 }
+                if (done){ break; }
             }
             finalMove.setScore(bestScore);
-            p2turn.get(depth).put(hashval, finalMove);
+        //    p2turn.get(depth).put(hashval, finalMove);
             return finalMove;
 
         }

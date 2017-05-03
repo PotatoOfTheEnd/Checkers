@@ -208,6 +208,14 @@ public class boardState {
     private int ncenter(int ind){
         return Math.min(Math.min(ind/4, 7-ind/4), Math.min(getColumnOfCell(ind), 7-getColumnOfCell(ind)));
     }
+    public boolean haswon(int winner, int loser){
+        for(int i=0; i<32; i++){
+            if (currentBoard[i].getPlayer()==loser && getMoves(i).size()>0){
+                return false;
+            }
+        }
+        return true;
+    }
     public int evaluateBoard(){
         int score = 0;
         // player 1 starts at row 0 and is positive, player 2 starts at row 7 and is negative

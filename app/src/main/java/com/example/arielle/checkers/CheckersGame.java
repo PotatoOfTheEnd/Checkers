@@ -69,7 +69,7 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
         mGridView = (GridView) findViewById(R.id.GVBoard);
         mGridView.setStretchMode(NO_STRETCH);
         mGridView.setAdapter(new ImageAdapter(this, boredom));
-        ai = new MinMax(6);
+        ai = new MinMax(5);
         chainJump = false;
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View v, int position, long id){
