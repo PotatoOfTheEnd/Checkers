@@ -5,7 +5,7 @@ package com.example.arielle.checkers;
  */
 
 import java.util.ArrayList;
-public class boardState {
+public class boardState implements gameBoard{
     private cellState[] currentBoard;
     boardState(){
         currentBoard = new cellState[32];
@@ -20,6 +20,9 @@ public class boardState {
         for(int i=0; i<32; i++){
             currentBoard[i] = new cellState(_currentBoard[i]);
         }
+    }
+    public boardState copy(){
+        return new boardState(currentBoard);
     }
     public int getVal(int ind){
         if (currentBoard[ind].getPlayer()==0){ return 0; }
@@ -205,10 +208,18 @@ public class boardState {
         tmp.addAll(getJumps(ind));
         return tmp;
     }
+    public ArrayList<Move> getPlayerMoves(int player){
+        ArrayList<Move> tmp = new ArrayList<>();
+        for(int i=0; i<32; i++){
+            if (currentBoard[i].getPlayer()==player){tmp.addAll(getMoves(i));}
+        }
+        return tmp;
+    }
     private int ncenter(int ind){
         return Math.min(Math.min(ind/4, 7-ind/4), Math.min(getColumnOfCell(ind), 7-getColumnOfCell(ind)));
     }
-    public boolean haswon(int winner, int loser){
+    public boolean hasWon(int winner){
+        int loser = (winner==1)?2:1;
         for(int i=0; i<32; i++){
             if (currentBoard[i].getPlayer()==loser && getMoves(i).size()>0){
                 return false;

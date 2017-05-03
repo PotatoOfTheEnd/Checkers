@@ -35,10 +35,9 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
         fclick = false;
         cpuMove();
     }
-    private MinMax ai;
     public void cpuMove(){
         boardState tpb = new boardState(boredom.getCurrentBoard());
-        Move tpMove = ai.getVal(tpb, 2, 6, -100000000, 100000000);
+        Move tpMove = MinMax.getVal(tpb, 2, 6, -100000000, 100000000);
         if (tpMove.getA() != tpMove.getB()) {
             boredom.makeMove(tpMove);
         }
@@ -69,7 +68,6 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
         mGridView = (GridView) findViewById(R.id.GVBoard);
         mGridView.setStretchMode(NO_STRETCH);
         mGridView.setAdapter(new ImageAdapter(this, boredom));
-        ai = new MinMax(5);
         chainJump = false;
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View v, int position, long id){
