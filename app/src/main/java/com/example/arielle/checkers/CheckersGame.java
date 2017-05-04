@@ -11,12 +11,13 @@ import android.widget.Toast;
 import static android.widget.GridView.NO_STRETCH;
 
 public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue.JumpDialogListener{
-    GridView mGridView;
-    boardState boredom;
+    private GridView mGridView;
+    private boardState boredom;
     private boolean chainJump;
-    boolean playerTurn, fclick;
-    int pvrow, pvcol, crow, ccol;
-    void update(){
+    private boolean playerTurn, fclick;
+    private int pvrow, pvcol, crow, ccol;
+    private int playerId;
+    private void update(){
         mGridView.setAdapter(new ImageAdapter(this, boredom));
     }
     public void showJumpDialog(){
@@ -64,6 +65,7 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
         super.onCreate(savedInstanceState);
         boredom = new boardState();
         playerTurn = true; fclick = false;
+        playerId = 1;
         setContentView(R.layout.activity_checkers_game);
         mGridView = (GridView) findViewById(R.id.GVBoard);
         mGridView.setStretchMode(NO_STRETCH);
