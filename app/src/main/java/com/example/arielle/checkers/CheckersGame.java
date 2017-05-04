@@ -18,7 +18,7 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
     private int pvrow, pvcol, crow, ccol;
     private int playerId;
     private void update(){
-        mGridView.setAdapter(new ImageAdapter(this, boredom));
+        mGridView.setAdapter(new ImageAdapter(this, boredom, playerId));
     }
     public void showJumpDialog(){
         DialogFragment dialog = new JumpAgainDialogue();
@@ -36,7 +36,15 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
         fclick = false;
         cpuMove();
     }
-    public void cpuMove(){
+    private void newGame(){
+        playerId = (playerId+1)%2;
+        boredom = new boardState();
+        if (playerId==1){
+            boardState tpb = new boardState(boredom.getCurrentBoard());
+            boredom.makeMove(MinMax.getVal(boredom, 2, 6, -100000000, 100000000));
+        }
+    }
+    private void cpuMove(){
         boardState tpb = new boardState(boredom.getCurrentBoard());
         Move tpMove = MinMax.getVal(tpb, 2, 6, -100000000, 100000000);
         if (tpMove.getA() != tpMove.getB()) {
@@ -51,11 +59,11 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
             }
         }
         if (tpMove.getA() == tpMove.getB() || tpval == 100000000) {
-            boredom = new boardState();
             Toast.makeText(CheckersGame.this, R.string.player_win, Toast.LENGTH_SHORT).show();
+            newGame();
         } else if (tpval == -100000000 || player1move) {
-            boredom = new boardState();
             Toast.makeText(CheckersGame.this, R.string.computer_win, Toast.LENGTH_SHORT).show();
+            newGame();
         }
         update();
     }
@@ -65,11 +73,11 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
         super.onCreate(savedInstanceState);
         boredom = new boardState();
         playerTurn = true; fclick = false;
-        playerId = 1;
+        playerId = 0;
         setContentView(R.layout.activity_checkers_game);
         mGridView = (GridView) findViewById(R.id.GVBoard);
         mGridView.setStretchMode(NO_STRETCH);
-        mGridView.setAdapter(new ImageAdapter(this, boredom));
+        mGridView.setAdapter(new ImageAdapter(this, boredom, playerId));
         chainJump = false;
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View v, int position, long id){

@@ -14,7 +14,7 @@ import android.widget.ImageView;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private Integer[] mThumbIds;
-    public ImageAdapter(Context c, boardState currBoard) {
+    public ImageAdapter(Context c, boardState currBoard, int player) {
         mContext = c;
         mThumbIds = new Integer[64];
         for(int i=0; i<64; i++){
@@ -23,7 +23,7 @@ public class ImageAdapter extends BaseAdapter {
                 if (currBoard.getPlayerAt(r, col)==0){
                     mThumbIds[i] = R.drawable.blacksquare;
                 }
-                else if (currBoard.getPlayerAt(r, col)==1){
+                else if ((currBoard.getPlayerAt(r, col)==1 && player==0)|| (currBoard.getPlayerAt(r, col)==2 && player==1)){
                     if (currBoard.getTypeOfPieceAt(r,col)==1) {
                         mThumbIds[i] = R.drawable.redpiece;
                     }
