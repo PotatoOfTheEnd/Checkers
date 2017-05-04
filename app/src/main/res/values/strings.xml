@@ -6,4 +6,5 @@
     <string name="checkers">Checkers</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="to_start">Return to start?</string>
 </resources>
