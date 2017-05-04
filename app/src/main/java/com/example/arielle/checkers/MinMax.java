@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class MinMax {
     public static Move getVal(gameBoard currentBoard, int player, int depth, int alpha, int beta){
+        Move finalMove = currentBoard.getMove();
         int bestScore, opponent;
         gameBoard tpBoard;
-        Move finalMove = new Move(0, 0, 1);
         if (player == 1) {
             opponent = 2;
             bestScore = -100000000;
