@@ -1,5 +1,6 @@
 package com.example.arielle.checkers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,10 +18,11 @@ public class StartPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_page);
         Button mCheckersButton = (Button) findViewById(R.id.checkersButton);
-        mCheckersButton.setOnClickListener(new android.view.View.OnClickListener(){
+        mCheckersButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                Intent i = new Intent(StartPage.this, CheckersGame.class);
+                startActivity(i);
             }
         });
     }
