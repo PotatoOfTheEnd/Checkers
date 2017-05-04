@@ -42,28 +42,21 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
         playerId = (playerId+1)%2;
         boredom = new boardState();
         if (playerId==1){
-            boardState tpb = new boardState(boredom.getCurrentBoard());
             boredom.makeMove(MinMax.getVal(boredom, 2, 6, -100000000, 100000000));
         }
     }
     private void cpuMove(){
-        boardState tpb = new boardState(boredom.getCurrentBoard());
-        Move tpMove = MinMax.getVal(tpb, 2, 6, -100000000, 100000000);
+        boardState tpb = boredom.copy();
+        CheckersMove tpMove = (CheckersMove) MinMax.getVal(tpb, 2, 6, -100000000, 100000000);
         if (tpMove.getA() != tpMove.getB()) {
             boredom.makeMove(tpMove);
         }
         int tpval = boredom.evaluateBoard();
         boolean player1move = true;
-        for (int i = 0; i < 32; i++) {
-            if (boredom.getCell(i).getPlayer() == 1 && boredom.getMoves(i).size() > 0) {
-                player1move = false;
-                break;
-            }
-        }
         if (tpMove.getA() == tpMove.getB() || tpval == 100000000) {
             Toast.makeText(CheckersGame.this, R.string.player_win, Toast.LENGTH_SHORT).show();
             newGame();
-        } else if (tpval == -100000000 || player1move) {
+        } else if (boredom.hasWon(2)) {
             Toast.makeText(CheckersGame.this, R.string.computer_win, Toast.LENGTH_SHORT).show();
             newGame();
         }
@@ -99,7 +92,7 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
                             if (boredom.isLegalJump(pvrow, pvcol, crow, ccol, 1)){
                                 boredom.movePiece(pvrow, pvcol, crow, ccol);
                                 update();
-                                if (boredom.getJumps(boredom.getIndexOfCell(crow, ccol)).size()>0){
+                                if (boredom.hasJumps(crow, ccol)){
                                     showJumpDialog();
                                 }
                                 else{
@@ -113,7 +106,7 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
                             playerTurn = false;
                             boolean isJump = boredom.movePiece(pvrow, pvcol, crow, ccol);
                             update();
-                            if (isJump && boredom.getJumps(boredom.getIndexOfCell(crow, ccol)).size()>0){
+                            if (isJump && boredom.hasJumps(crow, ccol)){
                                 showJumpDialog();
                             }
                             else{

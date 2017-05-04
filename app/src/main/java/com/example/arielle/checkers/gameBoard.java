@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public interface gameBoard {
     boolean hasWon(int player);
     void makeMove(Move m);
-    public Move getMove();
-    public ArrayList<Move> getPlayerMoves(int player);
-    public int evaluateBoard();
-    public gameBoard copy();
+    Move getMove();
+    ArrayList<Move> getPlayerMoves(int player);
+    int evaluateBoard();
+    gameBoard copy();
 }

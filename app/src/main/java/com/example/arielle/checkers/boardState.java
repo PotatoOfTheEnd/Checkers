@@ -14,7 +14,6 @@ public class boardState implements gameBoard{
 
         }
     }
-
     boardState(cellState[] _currentBoard){
         currentBoard = new cellState[32];
         for(int i=0; i<32; i++){
@@ -24,18 +23,7 @@ public class boardState implements gameBoard{
     public boardState copy(){
         return new boardState(currentBoard);
     }
-    public int getVal(int ind){
-        if (currentBoard[ind].getPlayer()==0){ return 0; }
-        else if (currentBoard[ind].getPlayer() == 1){
-            return currentBoard[ind].getType()==1?1:2;
-        }
-        else{
-            return currentBoard[ind].getType()==1?3:4;
-        }
-    }
-    public cellState[] getCurrentBoard(){
-        return currentBoard;
-    }
+
     public boolean isValidIndex(int row, int col){
         if (row<0 || row>7 || col<0 || col>7){return false; }
         if (row%2 == 0){
@@ -47,12 +35,15 @@ public class boardState implements gameBoard{
             else{ return false; }
         }
     }
+
     public int getPlayerAt(int row, int col){
         return currentBoard[row*4+col/2].getPlayer();
     }
+
     public int getTypeOfPieceAt(int row, int col){
         return currentBoard[row*4+col/2].getType();
     }
+
     public boolean isLegalPlay(int startRow, int startCol, int destRow, int destCol, int player){
         if (!isValidIndex(startRow, startCol) || !isValidIndex(destRow,destCol)){ return false; }
         if (getPlayerAt(startRow, startCol)!=player){ return false; }
@@ -63,6 +54,7 @@ public class boardState implements gameBoard{
         }
         return false;
     }
+
     public boolean isLegalJump(int startRow, int startCol, int destRow, int destCol, int player){
         if (!isValidIndex(startRow, startCol) || !isValidIndex(destRow,destCol)){ return false; }
         if (getPlayerAt(startRow, startCol)!=player){ return false; }
@@ -72,6 +64,7 @@ public class boardState implements gameBoard{
         }
         return false;
     }
+
     public boolean movePiece(int startRow, int startCol, int destRow, int destCol){
         int inda = getIndexOfCell(startRow, startCol), indb = getIndexOfCell(destRow, destCol);
         if (legalMove(inda, indb)){ move(inda, indb); return false;}
@@ -93,76 +86,13 @@ public class boardState implements gameBoard{
             else{ return -1; }
         }
     }
-    public int getRowOfCell(int ind){
-        return ind/4;
-    }
-    public int getColumnOfCell(int ind){
-        if (ind%2==0){
-            return (ind%4)*2;
-        }
-        else{
-            return (ind%4)*2+1;
-        }
-    }
-    public String toString(){
-        String tmp = "";
-        for(int i=7; i>=0; i--){
-            for(int j=0; j<8; j++){
-                int ind = getIndexOfCell(i, j);
-                if (ind<0){ tmp+="X"; }
-                else if (currentBoard[ind].getPlayer() == 1) { tmp+="W";}
-                else if (currentBoard[ind].getPlayer() == 2) { tmp+="B";}
-                else{tmp+="O";}
-            }
-            tmp+="\n";
-        }
-        return tmp;
+
+    public boolean hasJumps(int row, int col){
+        return getJumps(getIndexOfCell(row, col)).size()>0;
     }
 
-    public boolean legalMove(int a, int b){
-        if (b<0 || a<0 || currentBoard[a].getPlayer()==0 || !currentBoard[b].isNeighbor(a)) return false;
-        if (currentBoard[a].getType()!=2){
-            if (currentBoard[a].getPlayer()==1 && a>b){ return false; }
-            else if (currentBoard[a].getPlayer()==2 && a<b){ return false; }
-        }
-        return (currentBoard[b].getPlayer() == 0);
-    }
-
-    public void move(int a, int b){
-
-        currentBoard[b].setCell(currentBoard[a]);
-        currentBoard[a].clear();
-
-        if (currentBoard[b].getPlayer() == 1 && b/4 == 7){ currentBoard[b].setType(2); }
-        else if (currentBoard[b].getPlayer() == 2 && b/4 == 0) {currentBoard[b].setType(2); }
-    }
-
-    public void jump(int a, int b, int c){
-        currentBoard[c].setCell(currentBoard[a]);
-        currentBoard[b].clear(); currentBoard[a].clear();
-        if (currentBoard[c].getPlayer() == 1 && c/4 == 7){ currentBoard[c].setType(2); }
-        else if (currentBoard[c].getPlayer() == 2 && c/4 == 0) {currentBoard[c].setType(2); }
-    }
-    private boolean diagnol(int a, int b, int c){
-        for(int i=0; i<4; i++){
-            if (currentBoard[a].getMove(i)==b && currentBoard[b].getMove(i)==c){ return true; }
-        }
-        return false;
-    }
-    public boolean legalJump(int a, int b, int c){
-        if (b<0 || c<0 || a<0 || currentBoard[a].getPlayer()==0) return false;
-        if (!diagnol(a, b, c)) return false;
-        if (currentBoard[a].getType()!=2){
-            if (currentBoard[a].getPlayer()==1 && a>b){ return false; }
-            else if (currentBoard[a].getPlayer()==2 && a<b){ return false; }
-        }
-        return (currentBoard[b].getPlayer()!=currentBoard[a].getPlayer() && currentBoard[b].getPlayer()!=0 && currentBoard[c].getPlayer() == 0);
-    }
-
-    public cellState getCell(int ind){
-        return currentBoard[ind];
-    }
-    public void makeMove(Move toMove){
+    public void makeMove(Move tpMove){
+        CheckersMove toMove = (CheckersMove) tpMove;
         if (toMove.getType() == 1){
             move(toMove.getA(), toMove.getB());
         }
@@ -177,47 +107,11 @@ public class boardState implements gameBoard{
             jump(toMove.getA(), toMove.getB(), toMove.getC());
         }
     }
-    public ArrayList<Move> getJumps(int ind){
-        ArrayList<Move> tmp = new ArrayList<>();
-        Move tpmove;
-        boardState tpBoard;
-        for(int i=0; i<4; i++){
-            if (currentBoard[ind].getMove(i)>0 && legalJump(ind, currentBoard[ind].getMove(i), currentBoard[currentBoard[ind].getMove(i)].getMove(i))){
-                tpmove = new Move(ind, currentBoard[ind].getMove(i), currentBoard[currentBoard[ind].getMove(i)].getMove(i), 2);
-                tpBoard = new boardState(currentBoard);
-                tpBoard.makeMove(tpmove);
-                for(Move j: tpBoard.getJumps(tpmove.getC())){
-                    tmp.add(new Move(tpmove, j));
-                }
-                tmp.add(tpmove);
-            }
-        }
-        return tmp;
-    }
-    public ArrayList<Move> getMoves(int ind){
-        ArrayList<Move> tmp = new ArrayList<>();
-        Move tpmove;
 
-        if (ind<0 || ind>31) {return tmp; }
-        for(int i=0; i<4; i++){
-            if (legalMove(ind, currentBoard[ind].getMove(i))){
-                tpmove = new Move(ind, currentBoard[ind].getMove(i), 1);
-                tmp.add(tpmove);
-            }
-        }
-        tmp.addAll(getJumps(ind));
-        return tmp;
+    public Move getMove(){
+        return new CheckersMove();
     }
-    public ArrayList<Move> getPlayerMoves(int player){
-        ArrayList<Move> tmp = new ArrayList<>();
-        for(int i=0; i<32; i++){
-            if (currentBoard[i].getPlayer()==player){tmp.addAll(getMoves(i));}
-        }
-        return tmp;
-    }
-    private int ncenter(int ind){
-        return Math.min(Math.min(ind/4, 7-ind/4), Math.min(getColumnOfCell(ind), 7-getColumnOfCell(ind)));
-    }
+
     public boolean hasWon(int winner){
         int loser = (winner==1)?2:1;
         for(int i=0; i<32; i++){
@@ -227,6 +121,7 @@ public class boardState implements gameBoard{
         }
         return true;
     }
+
     public int evaluateBoard(){
         int score = 0;
         // player 1 starts at row 0 and is positive, player 2 starts at row 7 and is negative
@@ -258,4 +153,96 @@ public class boardState implements gameBoard{
         }
         return score;
     }
+
+    public ArrayList<Move> getPlayerMoves(int player){
+        ArrayList<Move> tmp = new ArrayList<>();
+        for(int i=0; i<32; i++){
+            if (currentBoard[i].getPlayer()==player){tmp.addAll(getMoves(i));}
+        }
+        return tmp;
+    }
+
+    private boolean legalMove(int a, int b){
+        if (b<0 || a<0 || currentBoard[a].getPlayer()==0 || !currentBoard[b].isNeighbor(a)) return false;
+        if (currentBoard[a].getType()!=2){
+            if (currentBoard[a].getPlayer()==1 && a>b){ return false; }
+            else if (currentBoard[a].getPlayer()==2 && a<b){ return false; }
+        }
+        return (currentBoard[b].getPlayer() == 0);
+    }
+
+    private void move(int a, int b){
+
+        currentBoard[b].setCell(currentBoard[a]);
+        currentBoard[a].clear();
+
+        if (currentBoard[b].getPlayer() == 1 && b/4 == 7){ currentBoard[b].setType(2); }
+        else if (currentBoard[b].getPlayer() == 2 && b/4 == 0) {currentBoard[b].setType(2); }
+    }
+
+    private void jump(int a, int b, int c){
+        currentBoard[c].setCell(currentBoard[a]);
+        currentBoard[b].clear(); currentBoard[a].clear();
+        if (currentBoard[c].getPlayer() == 1 && c/4 == 7){ currentBoard[c].setType(2); }
+        else if (currentBoard[c].getPlayer() == 2 && c/4 == 0) {currentBoard[c].setType(2); }
+    }
+
+    private boolean diagnol(int a, int b, int c){
+        for(int i=0; i<4; i++){
+            if (currentBoard[a].getMove(i)==b && currentBoard[b].getMove(i)==c){ return true; }
+        }
+        return false;
+    }
+
+    private boolean legalJump(int a, int b, int c){
+        if (b<0 || c<0 || a<0 || currentBoard[a].getPlayer()==0) return false;
+        if (!diagnol(a, b, c)) return false;
+        if (currentBoard[a].getType()!=2){
+            if (currentBoard[a].getPlayer()==1 && a>b){ return false; }
+            else if (currentBoard[a].getPlayer()==2 && a<b){ return false; }
+        }
+        return (currentBoard[b].getPlayer()!=currentBoard[a].getPlayer() && currentBoard[b].getPlayer()!=0 && currentBoard[c].getPlayer() == 0);
+    }
+
+    private ArrayList<CheckersMove> getJumps(int ind){
+        ArrayList<CheckersMove> tmp = new ArrayList<>();
+        CheckersMove tpmove;
+        boardState tpBoard;
+        for(int i=0; i<4; i++){
+            if (currentBoard[ind].getMove(i)>0 && legalJump(ind, currentBoard[ind].getMove(i), currentBoard[currentBoard[ind].getMove(i)].getMove(i))){
+                tpmove = new CheckersMove(ind, currentBoard[ind].getMove(i), currentBoard[currentBoard[ind].getMove(i)].getMove(i), 2);
+                tpBoard = new boardState(currentBoard);
+                tpBoard.makeMove(tpmove);
+                for(CheckersMove j: tpBoard.getJumps(tpmove.getC())){
+                    tmp.add(new CheckersMove(tpmove, j));
+                }
+                tmp.add(tpmove);
+            }
+        }
+        return tmp;
+    }
+
+    private ArrayList<CheckersMove> getMoves(int ind){
+        ArrayList<CheckersMove> tmp = new ArrayList<>();
+        CheckersMove tpmove;
+
+        if (ind<0 || ind>31) {return tmp; }
+        for(int i=0; i<4; i++){
+            if (legalMove(ind, currentBoard[ind].getMove(i))){
+                tpmove = new CheckersMove(ind, currentBoard[ind].getMove(i), 1);
+                tmp.add(tpmove);
+            }
+        }
+        tmp.addAll(getJumps(ind));
+        return tmp;
+    }
+
+    private int getColumnOfCell(int ind){
+        return (ind%4*2)+(ind%2==0?0:1);
+    }
+
+    private int ncenter(int ind){
+        return Math.min(Math.min(ind/4, 7-ind/4), Math.min(getColumnOfCell(ind), 7-getColumnOfCell(ind)));
+    }
+
 }
