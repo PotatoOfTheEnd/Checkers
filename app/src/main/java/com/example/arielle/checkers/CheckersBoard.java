@@ -5,23 +5,23 @@ package com.example.arielle.checkers;
  */
 
 import java.util.ArrayList;
-public class boardState implements gameBoard{
+public class CheckersBoard implements gameBoard{
     private cellState[] currentBoard;
-    boardState(){
+    CheckersBoard(){
         currentBoard = new cellState[32];
         for(int i=0; i<32; i++){
             currentBoard[i] = new cellState(i);
 
         }
     }
-    boardState(cellState[] _currentBoard){
+    CheckersBoard(cellState[] _currentBoard){
         currentBoard = new cellState[32];
         for(int i=0; i<32; i++){
             currentBoard[i] = new cellState(_currentBoard[i]);
         }
     }
-    public boardState copy(){
-        return new boardState(currentBoard);
+    public CheckersBoard copy(){
+        return new CheckersBoard(currentBoard);
     }
 
     public boolean isValidIndex(int row, int col){
@@ -207,11 +207,11 @@ public class boardState implements gameBoard{
     private ArrayList<CheckersMove> getJumps(int ind){
         ArrayList<CheckersMove> tmp = new ArrayList<>();
         CheckersMove tpmove;
-        boardState tpBoard;
+        CheckersBoard tpBoard;
         for(int i=0; i<4; i++){
             if (currentBoard[ind].getMove(i)>0 && legalJump(ind, currentBoard[ind].getMove(i), currentBoard[currentBoard[ind].getMove(i)].getMove(i))){
                 tpmove = new CheckersMove(ind, currentBoard[ind].getMove(i), currentBoard[currentBoard[ind].getMove(i)].getMove(i), 2);
-                tpBoard = new boardState(currentBoard);
+                tpBoard = new CheckersBoard(currentBoard);
                 tpBoard.makeMove(tpmove);
                 for(CheckersMove j: tpBoard.getJumps(tpmove.getC())){
                     tmp.add(new CheckersMove(tpmove, j));

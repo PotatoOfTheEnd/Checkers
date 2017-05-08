@@ -14,7 +14,7 @@ import android.widget.ImageView;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private Integer[] mThumbIds;
-    public ImageAdapter(Context c, boardState currBoard, int player) {
+    public ImageAdapter(Context c, CheckersBoard currBoard, int player) {
         mContext = c;
         mThumbIds = new Integer[64];
         for(int i=0; i<64; i++){

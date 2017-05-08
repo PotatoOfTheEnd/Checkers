@@ -14,7 +14,7 @@ import static android.widget.GridView.NO_STRETCH;
 
 public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue.JumpDialogListener{
     private GridView mGridView;
-    private boardState boredom;
+    private CheckersBoard boredom;
     private boolean chainJump;
     private boolean playerTurn, fclick;
     private int pvrow, pvcol, crow, ccol;
@@ -40,13 +40,13 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
     }
     private void newGame(){
         playerId = (playerId+1)%2;
-        boredom = new boardState();
+        boredom = new CheckersBoard();
         if (playerId==1){
             boredom.makeMove(MinMax.getVal(boredom, 2, 6, -100000000, 100000000));
         }
     }
     private void cpuMove(){
-        boardState tpb = boredom.copy();
+        CheckersBoard tpb = boredom.copy();
         CheckersMove tpMove = (CheckersMove) MinMax.getVal(tpb, 2, 6, -100000000, 100000000);
         if (tpMove.getA() != tpMove.getB()) {
             boredom.makeMove(tpMove);
@@ -66,7 +66,7 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boredom = new boardState();
+        boredom = new CheckersBoard();
         playerTurn = true; fclick = false;
         playerId = 0;
         setContentView(R.layout.activity_checkers_game);
