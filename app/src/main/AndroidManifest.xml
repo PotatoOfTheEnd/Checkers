@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CheckersGame"/>
+        <activity android:name=".ConnectFourGame"/>
     </application>
 
 </manifest>

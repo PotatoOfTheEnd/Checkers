@@ -50,6 +50,7 @@ public class CheckersBoard implements gameBoard{
             return R.drawable.whitesquare;
         }
     }
+
     public boolean isValidIndex(int row, int col){
         if (row<0 || row>7 || col<0 || col>7){return false; }
         if (row%2 == 0){
