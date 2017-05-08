@@ -25,5 +25,13 @@ public class StartPage extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        Button mConnectFourButton = (Button) findViewById(R.id.connectfourButton);
+        mConnectFourButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(StartPage.this, ConnectFourGame.class);
+                startActivity(i);
+            }
+        });
     }
 }
