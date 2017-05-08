@@ -23,7 +23,33 @@ public class CheckersBoard implements gameBoard{
     public CheckersBoard copy(){
         return new CheckersBoard(currentBoard);
     }
-
+    public Integer getImage(int row, int col){
+        if (isValidIndex(row, col)){
+            int i = getIndexOfCell(row, col);
+            if (currentBoard[i].getPlayer()==0){
+                return R.drawable.blacksquare;
+            }
+            else if (currentBoard[i].getPlayer()==1){
+                if (currentBoard[i].getType()==1) {
+                     return R.drawable.redpiece;
+                }
+                else{
+                    return R.drawable.redking;
+                }
+            }
+            else{
+                if (currentBoard[i].getType()==1) {
+                    return R.drawable.blackpiece;
+                }
+                else{
+                    return R.drawable.blackking;
+                }
+            }
+        }
+        else{
+            return R.drawable.whitesquare;
+        }
+    }
     public boolean isValidIndex(int row, int col){
         if (row<0 || row>7 || col<0 || col>7){return false; }
         if (row%2 == 0){

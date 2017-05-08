@@ -12,5 +12,6 @@ public interface gameBoard {
     Move getMove();
     ArrayList<Move> getPlayerMoves(int player);
     int evaluateBoard();
+    Integer getImage(int row, int column);
     gameBoard copy();
 }

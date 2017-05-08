@@ -20,7 +20,7 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
     private int pvrow, pvcol, crow, ccol;
     private int playerId;
     private void update(){
-        mGridView.setAdapter(new ImageAdapter(this, boredom, playerId));
+        mGridView.setAdapter(new ImageAdapter(this, boredom));
     }
     public void showJumpDialog(){
         DialogFragment dialog = new JumpAgainDialogue();
@@ -72,7 +72,7 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
         setContentView(R.layout.activity_checkers_game);
         mGridView = (GridView) findViewById(R.id.GVBoard);
         mGridView.setStretchMode(NO_STRETCH);
-        mGridView.setAdapter(new ImageAdapter(this, boredom, playerId));
+        mGridView.setAdapter(new ImageAdapter(this, boredom));
         chainJump = false;
         Button mStartButton = (Button) findViewById(R.id.returnButton);
         mStartButton.setOnClickListener(new View.OnClickListener(){
