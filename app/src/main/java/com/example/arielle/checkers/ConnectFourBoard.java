@@ -17,7 +17,10 @@ public class ConnectFourBoard implements gameBoard {
     }
     private ConnectFourBoard(List<ArrayList<Integer>> _boardState){
         boardState = new ArrayList<>();
-        boardState.addAll(_boardState);
+        for(int i=0; i<7; i++){
+            boardState.add(new ArrayList<Integer>());
+            boardState.get(i).addAll(_boardState.get(i));
+        }
     }
     public boolean isLegalMove(int column){
         return boardState.get(column).size()<6;
@@ -52,6 +55,9 @@ public class ConnectFourBoard implements gameBoard {
         }
         return false;
     }
+    public void makeMove(int col, int player){
+        boardState.get(col).add(player);
+    }
     public void makeMove(Move m){
         ConnectFourMove cmove = (ConnectFourMove) m;
         boardState.get(cmove.getColumn()).add(cmove.getPlayer());
@@ -73,7 +79,8 @@ public class ConnectFourBoard implements gameBoard {
     public Integer getImage(int row, int column){
         if (boardState.get(column).size()<=row){ return R.drawable.blacksquare; }
         else if (boardState.get(column).get(row)==1){ return R.drawable.blackpiece; }
-        else{ return R.drawable.redpiece;}
+        else if (boardState.get(column).get(row)==2){ return R.drawable.redpiece;}
+        else{ return R.drawable.whitesquare; }
     }
     public gameBoard copy(){return new ConnectFourBoard(boardState);}
 }
