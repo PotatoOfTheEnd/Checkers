@@ -155,15 +155,12 @@ public class CheckersBoard implements gameBoard{
         // starting heuristic
         // men-> 30, kings->45, +2 for every row closer man is to being kinged
         //+6 for every man in the back row
-        boolean p1=false, p2=false;
         for(int i=0; i<32; i++){
             if (currentBoard[i].getPlayer() == 1){
-                p1 = true;
                 if (currentBoard[i].getType() == 1){ score += 60 + 2*(i/4); }
                 else{ score += 90 + ncenter(i); }
             }
             else if (currentBoard[i].getPlayer() == 2){
-                p2 = true;
                 if (currentBoard[i].getType() == 1){ score -= 60 + 2*(7 - i/4); }
                 else{ score -= 90 + ncenter(i); }
             }
@@ -171,12 +168,6 @@ public class CheckersBoard implements gameBoard{
         for(int i=0; i<4; i++){
             if (currentBoard[i].getType() == 1) { score +=6; }
             if (currentBoard[31-i].getType() == 1){ score -= 6; }
-        }
-        if (p1 && !p2){
-            return 100000000;
-        }
-        else if (!p1 && p2){
-            return -100000000;
         }
         return score;
     }
