@@ -48,12 +48,23 @@ public class ConnectFourGame extends AppCompatActivity {
                         playerTurn = false;
                         iAmBored.makeMove(position%7, 1);
                         update();
+                        if (iAmBored.hasWon(1)){
+                            Toast.makeText(ConnectFourGame.this, R.string.player_win, Toast.LENGTH_SHORT).show();
+                            iAmBored = new ConnectFourBoard();
+                            update();
+                        }
                    //     ConnectFourBoard tpbored = (ConnectFourBoard) iAmBored.copy();
                       //  ConnectFourMove tpMove = new ConnectFourMove(2, position%7);
                     //    iAmBored.makeMove(tpMove);
-                        iAmBored.makeMove(MinMax.getVal(iAmBored, 2, 4, -100000000, 100000000));
-                    //    Toast.makeText(ConnectFourGame.this, String.format("col%dplayer%d", tpMove.getColumn(), tpMove.getPlayer()), Toast.LENGTH_SHORT).show();
+                        iAmBored.makeMove(MinMax.getVal(iAmBored, 2, 5, -100000000, 100000000));
                         update();
+                        if(iAmBored.hasWon(2)){
+                            Toast.makeText(ConnectFourGame.this, R.string.computer_win, Toast.LENGTH_SHORT).show();
+                            iAmBored = new ConnectFourBoard();
+                            update();
+                        }
+                    //    Toast.makeText(ConnectFourGame.this, String.format("col%dplayer%d", tpMove.getColumn(), tpMove.getPlayer()), Toast.LENGTH_SHORT).show();
+
                         playerTurn = true;
                     }
                 }
