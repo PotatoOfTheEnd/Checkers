@@ -8,19 +8,21 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import static android.widget.GridView.NO_STRETCH;
 
-public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue.JumpDialogListener{
-    private GridView mGridView;
+public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDialogListener{
     private CheckersBoard boredom;
     private boolean chainJump;
-    private boolean playerTurn, fclick;
+    private boolean fclick;
     private int pvrow, pvcol, crow, ccol;
-    private int playerId;
-    private void update(){
-        mGridView.setAdapter(new ImageAdapter(this, boredom, 8, 8));
+    gameBoard getBoard(){
+        return boredom;
+    }
+    void resetBoard(){
+        boredom = new CheckersBoard();
     }
     public void showJumpDialog(){
         DialogFragment dialog = new JumpAgainDialogue();
@@ -36,16 +38,9 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
     public void onDialogNegativeClick(DialogFragment dialog){
         chainJump = false;
         fclick = false;
-        cpuMove();
+        computerMove();
     }
-    private void newGame(){
-        playerId = (playerId+1)%2;
-        boredom = new CheckersBoard();
-        if (playerId==1){
-            boredom.makeMove(MinMax.getVal(boredom, 2, 6, -100000000, 100000000));
-        }
-    }
-    private void cpuMove(){
+    void computerMove(){
         CheckersBoard tpb = boredom.copy();
         CheckersMove tpMove = (CheckersMove) MinMax.getVal(tpb, 2, 6, -100000000, 100000000);
         if (tpMove.getA() != tpMove.getB()) {
@@ -54,10 +49,12 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
         int tpval = boredom.evaluateBoard();
         boolean player1move = true;
         if (tpMove.getA() == tpMove.getB() || tpval == 100000000) {
-            Toast.makeText(CheckersGame.this, R.string.player_win, Toast.LENGTH_SHORT).show();
+            showMessage(R.string.player_win);
+            playerScore++;
             newGame();
         } else if (boredom.hasWon(2)) {
-            Toast.makeText(CheckersGame.this, R.string.computer_win, Toast.LENGTH_SHORT).show();
+            showMessage(R.string.computer_win);
+            computerScore++;
             newGame();
         }
         update();
@@ -67,22 +64,12 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boredom = new CheckersBoard();
-        playerTurn = true; fclick = false;
-        playerId = 0;
+
         setContentView(R.layout.activity_checkers_game);
-        mGridView = (GridView) findViewById(R.id.GVBoard);
-        mGridView.setStretchMode(NO_STRETCH);
+        init (CheckersGame.this, 8, 8);
+        playerTurn = true; fclick = false;
         update();
         chainJump = false;
-        Button mStartButton = (Button) findViewById(R.id.returnButton);
-        mStartButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent i = new Intent(CheckersGame.this, StartPage.class);
-                startActivity(i);
-            }
-
-        });
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View v, int position, long id){
                 if (playerTurn){
@@ -98,7 +85,7 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
                                 else{
                                     chainJump = false;
                                     fclick = false;
-                                    cpuMove();
+                                    computerMove();
                                 }
                             }
                         }
@@ -111,7 +98,7 @@ public class CheckersGame extends AppCompatActivity implements JumpAgainDialogue
                             }
                             else{
                                 fclick = false;
-                                cpuMove();
+                                computerMove();
                             }
                             playerTurn = true;
                         }

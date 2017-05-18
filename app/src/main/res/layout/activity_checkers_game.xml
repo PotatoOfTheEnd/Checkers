@@ -26,6 +26,12 @@
             tools:layout_editor_absoluteY="8dp"/>
 
 
+        <TextView
+            android:id="@+id/scoreTracker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"/>
+
         <Button
             android:id="@+id/returnButton"
             android:layout_width="wrap_content"

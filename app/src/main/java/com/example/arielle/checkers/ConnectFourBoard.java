@@ -86,6 +86,10 @@ public class ConnectFourBoard implements gameBoard {
         }
         return tmp;
     }
+    public boolean isTie(){
+        for(int i=0; i<7; i++){ if(boardState.get(i).size()!=6){return false; }}
+        return true;
+    }
     private boolean isThreat(int row, int col, int player){
         for(int i=-1; i<=1; i++){
             for(int j=0; j<=3; j++){
@@ -102,10 +106,12 @@ public class ConnectFourBoard implements gameBoard {
         int sm=0;
         int p1threats=0, p2threats=0;
         for(int i=0; i<7; i++){
+            boolean p1odd=false, p1even=false, p2odd=false, p2even=false;
             for(int j=boardState.get(i).size(); j<6; j++){
                 if (canPlay(j, i)) {
                     if (verticalStreak(i, 1, 3) || isThreat(j, i, 1)){
                         p1threats++;
+                        
                         if (p1threats==2){
                             sm+=1000000;
                         }
