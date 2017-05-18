@@ -3,6 +3,7 @@ package com.example.arielle.checkers;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +17,16 @@ import static android.widget.GridView.NO_STRETCH;
  * Created by arielle on 18/05/2017.
  */
 
-public abstract class GridGame extends AppCompatActivity {
+public abstract class GridGame extends AppCompatActivity implements EndGameDialogue.EndGameDialogueListener{
+    public void justEndIt(){
+        playerID = (playerID+1)%2;
+        resetBoard();
+        updateScore();
+        update();
+        if (playerID==1){
+            computerMove();
+        }
+    }
     TextView scoreKeeper;
     boolean playerTurn;
     int row, cols, computerScore, playerScore, playerID;
@@ -48,13 +58,8 @@ public abstract class GridGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
     void newGame(){
-        playerID = (playerID+1)%2;
-        resetBoard();
-        updateScore();
-        update();
-        if (playerID==1){
-            computerMove();
-        }
+        DialogFragment dia = new EndGameDialogue();
+        dia.show(getSupportFragmentManager(), "EndDialogueFragment");
     }
     void showMessage(int id){
         Toast.makeText(mContext, id, Toast.LENGTH_SHORT).show();

@@ -29,13 +29,13 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
         dialog.show(getSupportFragmentManager(), "JumpDialogFragment");
     }
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog){
+    public void doJump(DialogFragment dialog){
         chainJump = true;
         fclick = true;
         pvrow=crow; pvcol=ccol;
     }
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog){
+    public void doNotJump(DialogFragment dialog){
         chainJump = false;
         fclick = false;
         computerMove();
