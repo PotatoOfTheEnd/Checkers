@@ -28,22 +28,11 @@ public class LevelSelector extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setMessage(R.string.level_choice).setPositiveButton(R.string.easy,
-                new DialogInterface.OnClickListener(){
+        alertDialogBuilder.setTitle(R.string.level_choice)
+                .setItems(R.array.levels, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int id){
-                        levelSelectorListener.setLevel(2);
-                    }
-                }).setNeutralButton(R.string.medium,
-                new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int id){
-                        levelSelectorListener.setLevel(4);
-                    }
-                }).setNegativeButton(R.string.hard,
-                new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int id){
-                        levelSelectorListener.setLevel(6);
+                    public void onClick(DialogInterface dialog, int id) {
+                        levelSelectorListener.setLevel((id+1)*2);
                     }
                 });
         return alertDialogBuilder.create();
