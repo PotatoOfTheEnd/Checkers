@@ -5,7 +5,9 @@ package com.example.arielle.checkers;
  */
 
 public interface Move {
-    public int getScore();
-    public void setScore(int _score);
-    public boolean isDefault();
+    int getScore();
+
+    void setScore(int _score);
+
+    boolean isDefault();
 }

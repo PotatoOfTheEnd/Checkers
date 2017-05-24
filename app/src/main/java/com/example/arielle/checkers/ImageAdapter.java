@@ -14,11 +14,12 @@ import android.widget.ImageView;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private Integer[] mThumbIds;
-    public ImageAdapter(Context c, gameBoard currBoard, int numRows, int numCols) {
+
+    public ImageAdapter(Context c, GameBoard currBoard, int numRows, int numCols) {
         mContext = c;
-        mThumbIds = new Integer[numRows*numCols];
-        for(int i=0; i<numRows*numCols; i++){
-            int r = numRows-1-i/numCols, col=i%numCols;
+        mThumbIds = new Integer[numRows * numCols];
+        for (int i = 0; i < numRows * numCols; i++) {
+            int r = numRows - 1 - i / numCols, col = i % numCols;
             mThumbIds[i] = currBoard.getImage(r, col);
         }
     }

@@ -14,21 +14,21 @@ import static com.example.arielle.checkers.R.styleable.View;
 
 public class StartPage extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_page);
-        Button mCheckersButton = (Button) findViewById(R.id.checkersButton);
-        mCheckersButton.setOnClickListener(new View.OnClickListener(){
+        Button checkersButton = (Button) findViewById(R.id.checkersButton);
+        checkersButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent i = new Intent(StartPage.this, CheckersGame.class);
                 startActivity(i);
             }
         });
-        Button mConnectFourButton = (Button) findViewById(R.id.connectfourButton);
-        mConnectFourButton.setOnClickListener(new View.OnClickListener(){
+        Button connectFourButton = (Button) findViewById(R.id.connectfourButton);
+        connectFourButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent i = new Intent(StartPage.this, ConnectFourGame.class);
                 startActivity(i);
             }

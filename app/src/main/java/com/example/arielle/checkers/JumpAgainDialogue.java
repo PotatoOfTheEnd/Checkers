@@ -13,25 +13,29 @@ import android.support.v7.app.AlertDialog;
  */
 
 public class JumpAgainDialogue extends DialogFragment {
-    public interface JumpDialogListener{
+    public interface JumpDialogListener {
         void doJump(DialogFragment dialog);
+
         void doNotJump(DialogFragment dialog);
     }
+
     JumpDialogListener mListener;
+
     @Override
-    public void onAttach(Context mContext){
+    public void onAttach(Context mContext) {
         super.onAttach(mContext);
         mListener = (JumpDialogListener) mContext;
     }
+
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState){
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-        mBuilder.setMessage(R.string.jump_again).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int id){
+        mBuilder.setMessage(R.string.jump_again).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
                 mListener.doJump(JumpAgainDialogue.this);
             }
-        }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int id){
+        }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
                 mListener.doNotJump(JumpAgainDialogue.this);
             }
         });

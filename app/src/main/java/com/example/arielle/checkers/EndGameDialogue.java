@@ -12,22 +12,26 @@ import android.support.v7.app.AlertDialog;
  */
 
 public class EndGameDialogue extends DialogFragment {
-    public interface EndGameDialogueListener{
+    public interface EndGameDialogueListener {
         void justEndIt();
     }
+
     EndGameDialogueListener listenerOfTheEnd;
+
     @Override
-    public void onAttach(Context noContext){
+    public void onAttach(Context noContext) {
         super.onAttach(noContext);
         listenerOfTheEnd = (EndGameDialogueListener) noContext;
     }
-    public Dialog onCreateDialog(Bundle savedInstanceState){
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder epicBeaver = new AlertDialog.Builder(getActivity());
-        epicBeaver.setMessage(R.string.game_over).setPositiveButton(R.string.okay, new DialogInterface.OnClickListener(){
-                @Override
-                public void onClick(DialogInterface namelessDialogue, int id){
-                    listenerOfTheEnd.justEndIt();
-                }
+        epicBeaver.setMessage(R.string.game_over).setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface namelessDialogue, int id) {
+                listenerOfTheEnd.justEndIt();
+            }
 
         });
         return epicBeaver.create();
