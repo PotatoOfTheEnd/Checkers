@@ -21,6 +21,7 @@ public class EndGameDialogue extends DialogFragment {
     @Override
     public void onAttach(Context noContext) {
         super.onAttach(noContext);
+        setCancelable(false);
         listenerOfTheEnd = (EndGameDialogueListener) noContext;
     }
 

@@ -21,7 +21,7 @@ public class ConnectFourGame extends GridGame {
     }
 
     void computerMove() {
-        iAmBored.makeMove(MinMax.getVal(iAmBored, 2, 6, -100000000, 100000000));
+        iAmBored.makeMove(MinMax.getVal(iAmBored, 2, level, -100000000, 100000000));
         update();
         if (iAmBored.hasWon(2)) {
             showMessage(R.string.computer_win);

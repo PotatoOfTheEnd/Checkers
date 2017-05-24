@@ -17,7 +17,13 @@ import static android.widget.GridView.NO_STRETCH;
  * Created by arielle on 18/05/2017.
  */
 
-public abstract class GridGame extends AppCompatActivity implements EndGameDialogue.EndGameDialogueListener {
+public abstract class GridGame extends AppCompatActivity
+        implements EndGameDialogue.EndGameDialogueListener, LevelSelector.LevelSelectorListener{
+
+    public void setLevel(int level){
+        this.level=level;
+    }
+
     public void justEndIt() {
         playerID = (playerID + 1) % 2;
         resetBoard();
@@ -57,10 +63,11 @@ public abstract class GridGame extends AppCompatActivity implements EndGameDialo
             }
         });
         gridView = (GridView) findViewById(R.id.GVBoard);
-        gridView.setStretchMode(NO_STRETCH);
         scoreKeeper = (TextView) findViewById(R.id.scoreTracker);
         update();
         updateScore();
+        DialogFragment dialog = new LevelSelector();
+        dialog.show(getSupportFragmentManager(), "LevelSelectFragment");
 
     }
 
@@ -78,7 +85,7 @@ public abstract class GridGame extends AppCompatActivity implements EndGameDialo
     }
 
     void updateScore() {
-        scoreKeeper.setText(String.format(getResources().getString(R.string.computer_score) + "%d " + getResources().getString(R.string.player_score) + "%d", computerScore, playerScore));
+        scoreKeeper.setText(String.format(getResources().getString(R.string.computer_score) + " %d " + getResources().getString(R.string.player_score) + " %d", computerScore, playerScore));
     }
 
 

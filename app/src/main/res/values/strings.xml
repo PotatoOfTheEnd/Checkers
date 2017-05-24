@@ -13,4 +13,8 @@
     <string name="tie">It\'s a tie! You both lose.</string>
     <string name="game_over">Game over!</string>
     <string name="okay">Okay</string>
+    <string name="level_choice">Choose a level:</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
 </resources>

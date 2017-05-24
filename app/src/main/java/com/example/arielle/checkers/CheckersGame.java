@@ -1,9 +1,11 @@
 package com.example.arielle.checkers;
 
+import android.content.res.Resources;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDialogListener {
     private CheckersBoard boredom;
@@ -25,7 +27,7 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
     }
 
     @Override
-    public void doJump(DialogFragment dialog) {
+    public void doJump() {
         chainJump = true;
         fclick = true;
         pvrow = crow;
@@ -33,7 +35,7 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
     }
 
     @Override
-    public void doNotJump(DialogFragment dialog) {
+    public void doNotJump() {
         chainJump = false;
         fclick = false;
         computerMove();
@@ -41,7 +43,7 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
 
     void computerMove() {
         CheckersBoard tpb = boredom.copy();
-        CheckersMove tpMove = (CheckersMove) MinMax.getVal(tpb, 2, 6, -100000000, 100000000);
+        CheckersMove tpMove = (CheckersMove) MinMax.getVal(tpb, 2, level, -100000000, 100000000);
         if (tpMove.getA() != tpMove.getB()) {
             boredom.makeMove(tpMove);
         }
@@ -58,7 +60,6 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
         }
         update();
     }
-
     //does this work?
     @Override
     protected void onCreate(Bundle savedInstanceState) {

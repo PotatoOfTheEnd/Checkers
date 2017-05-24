@@ -12,20 +12,20 @@ import android.widget.ImageView;
  */
 
 public class ImageAdapter extends BaseAdapter {
-    private Context mContext;
-    private Integer[] mThumbIds;
+    private Context context;
+    private Integer[] thumbIds;
 
     public ImageAdapter(Context c, GameBoard currBoard, int numRows, int numCols) {
-        mContext = c;
-        mThumbIds = new Integer[numRows * numCols];
+        context = c;
+        thumbIds = new Integer[numRows * numCols];
         for (int i = 0; i < numRows * numCols; i++) {
             int r = numRows - 1 - i / numCols, col = i % numCols;
-            mThumbIds[i] = currBoard.getImage(r, col);
+            thumbIds[i] = currBoard.getImage(r, col);
         }
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return thumbIds.length;
     }
 
     public Object getItem(int position) {
@@ -41,15 +41,16 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(100, 100));
+            imageView = new ImageView(context);
+            //imageView.setLayoutParams(new GridView.LayoutParams(150, 150));
+            imageView.setAdjustViewBounds(true);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(0, 0, 0, 0);
         } else {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(mThumbIds[position]);
+        imageView.setImageResource(thumbIds[position]);
         return imageView;
     }
 
