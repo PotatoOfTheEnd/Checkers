@@ -11,7 +11,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static android.widget.GridView.NO_STRETCH;
 
 /**
  * Created by arielle on 18/05/2017.
