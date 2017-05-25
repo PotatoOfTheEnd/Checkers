@@ -66,9 +66,6 @@ public class CheckersBoard implements GameBoard {
         return currentBoard[row * 4 + col / 2].getPlayer();
     }
 
-    public int getTypeOfPieceAt(int row, int col) {
-        return currentBoard[row * 4 + col / 2].getType();
-    }
 
     public boolean isLegalPlay(int startRow, int startCol, int destRow, int destCol, int player) {
         if (!isValidIndex(startRow, startCol) || !isValidIndex(destRow, destCol)) {
@@ -182,12 +179,18 @@ public class CheckersBoard implements GameBoard {
                     score += 60 + 2 * (i / 4);
                 } else {
                     score += 90 + ncenter(i);
+                    if (isTrapped(i)) {
+                        score -= 15;
+                    }
                 }
             } else if (currentBoard[i].getPlayer() == 2) {
                 if (currentBoard[i].getType() == 1) {
                     score -= 60 + 2 * (7 - i / 4);
                 } else {
                     score -= 90 + ncenter(i);
+                    if (isTrapped(i)) {
+                        score += 15;
+                    }
                 }
             }
         }
@@ -309,6 +312,48 @@ public class CheckersBoard implements GameBoard {
         return (ind % 4 * 2) + (ind % 2 == 0 ? 0 : 1);
     }
 
+    private int getOpposite(int ind){
+        if (ind == 0) {
+            return 3;
+        }
+        else if (ind == 1){
+            return 2;
+        }
+        else if (ind == 2){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+
+    private boolean isTrapped(int ind){
+        if (getColumnOfCell(ind)!=0 && getColumnOfCell(ind)!=7 && ind/4!=0 && ind/4!=7) {
+            return false;
+        }
+        ArrayList<CheckersMove> allMoves = getMoves(ind);
+        for (CheckersMove checkersMove: allMoves) {
+            if (checkersMove.getType()==2) {
+                return false;
+            }
+            CheckersBoard tmpBoard = new CheckersBoard(currentBoard);
+            tmpBoard.makeMove(checkersMove);
+            CheckersCell tmpCell = currentBoard[checkersMove.getB()];
+            boolean safe = true;
+            for (int i=0; i<4; i++){
+                if (tmpBoard.legalJump(tmpCell.getMove(i),
+                        checkersMove.getB(), tmpCell.getMove(getOpposite(i)))){
+                    safe = false;
+                    break;
+                }
+
+            }
+            if (safe) {
+                return false;
+            }
+        }
+        return true;
+    }
     private int ncenter(int ind) {
         return Math.min(Math.min(ind / 4, 7 - ind / 4), Math.min(getColumnOfCell(ind), 7 - getColumnOfCell(ind)));
     }
