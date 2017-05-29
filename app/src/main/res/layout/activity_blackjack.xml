@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#336600"
+    tools:context="com.example.arielle.checkers.blackjack">
+
+
+    <Button
+        android:id="@+id/hitButton"
+        android:layout_width="109dp"
+        android:layout_height="69dp"
+        android:text="Hit"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="234dp"
+        tools:textSize="24sp" />
+
+    <Button
+        android:id="@+id/passButton"
+        android:layout_width="109dp"
+        android:layout_height="69dp"
+        android:text="Pass"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="244dp"
+        tools:layout_editor_absoluteY="234dp" />
+
+    <ImageView
+        android:id="@+id/Cards"
+        android:layout_width="109dp"
+        android:layout_height="132dp"
+        app:srcCompat="@drawable/no_cards_down_v3"
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="53dp" />
+
+    <ImageView
+        android:id="@+id/Deck"
+        android:layout_width="102dp"
+        android:layout_height="139dp"
+        app:srcCompat="@drawable/deck"
+        tools:layout_editor_absoluteX="244dp"
+        tools:layout_editor_absoluteY="53dp" />
+
+</android.support.constraint.ConstraintLayout>

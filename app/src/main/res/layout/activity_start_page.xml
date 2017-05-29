@@ -16,4 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/connect_four"/>
+    <Button
+        android:id="@+id/blackjackButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/black_jack"/>
 </LinearLayout>

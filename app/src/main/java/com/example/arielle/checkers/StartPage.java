@@ -33,5 +33,13 @@ public class StartPage extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        Button blackjackButton = (Button) findViewById(R.id.blackjackButton);
+        connectFourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(StartPage.this, blackjack.class);
+                startActivity(i);
+            }
+        });
     }
 }
