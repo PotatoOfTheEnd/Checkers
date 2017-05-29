@@ -34,7 +34,7 @@ public class StartPage extends AppCompatActivity {
             }
         });
         Button blackjackButton = (Button) findViewById(R.id.blackjackButton);
-        connectFourButton.setOnClickListener(new View.OnClickListener() {
+        blackjackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(StartPage.this, blackjack.class);
