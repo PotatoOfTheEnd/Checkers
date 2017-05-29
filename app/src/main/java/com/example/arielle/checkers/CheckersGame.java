@@ -52,11 +52,11 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
         if (tpMove.getA() == tpMove.getB() || tpval == 100000000) {
             showMessage(R.string.player_win);
             playerScore++;
-            newGame();
+            gameOver();
         } else if (boredom.hasWon(2)) {
             showMessage(R.string.computer_win);
             computerScore++;
-            newGame();
+            gameOver();
         }
         update();
     }
@@ -74,7 +74,9 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
         chainJump = false;
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (playerTurn) {
+                if (gameOver) {
+                    newGame();
+                } else if (playerTurn) {
                     if (fclick) {
                         crow = 7 - position / 8;
                         ccol = position % 8;

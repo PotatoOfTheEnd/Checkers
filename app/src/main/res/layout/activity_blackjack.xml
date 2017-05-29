@@ -14,33 +14,42 @@
         android:layout_width="109dp"
         android:layout_height="69dp"
         android:text="Hit"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="234dp"
-        tools:textSize="24sp" />
+        tools:textSize="24sp"
+        android:layout_marginLeft="35dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="208dp"/>
 
     <Button
         android:id="@+id/passButton"
         android:layout_width="109dp"
         android:layout_height="69dp"
+        android:layout_marginBottom="208dp"
+        android:layout_marginRight="35dp"
         android:text="Pass"
         android:textSize="24sp"
-        tools:layout_editor_absoluteX="244dp"
-        tools:layout_editor_absoluteY="234dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <ImageView
         android:id="@+id/Cards"
         android:layout_width="109dp"
         android:layout_height="132dp"
         app:srcCompat="@drawable/no_cards_down_v3"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="53dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="53dp"
+        android:layout_marginLeft="35dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
 
     <ImageView
         android:id="@+id/Deck"
-        android:layout_width="102dp"
-        android:layout_height="139dp"
-        app:srcCompat="@drawable/deck"
-        tools:layout_editor_absoluteX="244dp"
-        tools:layout_editor_absoluteY="53dp" />
+        android:layout_width="109dp"
+        android:layout_height="132dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="53dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/deck"/>
 
 </android.support.constraint.ConstraintLayout>

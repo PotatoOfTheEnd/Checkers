@@ -25,16 +25,21 @@ public abstract class GridGame extends AppCompatActivity
 
     public void justEndIt() {
         playerID = (playerID + 1) % 2;
+        gameOver = true;
+    }
+
+    public void newGame() {
         resetBoard();
         updateScore();
         update();
         if (playerID == 1) {
             computerMove();
         }
+        gameOver = false;
     }
 
     TextView scoreKeeper;
-    boolean playerTurn;
+    boolean playerTurn, gameOver;
     int row, cols, computerScore, playerScore, playerID, level;
     Context context;
     GridView gridView;
@@ -53,6 +58,7 @@ public abstract class GridGame extends AppCompatActivity
         computerScore = 0;
         playerScore = 0;
         playerID = 0;
+        gameOver = false;
         startButton = (Button) findViewById(R.id.returnButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +76,7 @@ public abstract class GridGame extends AppCompatActivity
 
     }
 
-    void newGame() {
+    void gameOver() {
         DialogFragment dia = new EndGameDialogue();
         dia.show(getSupportFragmentManager(), "EndDialogueFragment");
     }

@@ -26,10 +26,10 @@ public class ConnectFourGame extends GridGame {
         if (iAmBored.hasWon(2)) {
             showMessage(R.string.computer_win);
             computerScore++;
-            newGame();
+            gameOver();
         } else if (iAmBored.isTie()) {
             showMessage(R.string.tie);
-            newGame();
+            gameOver();
         }
     }
 
@@ -45,7 +45,9 @@ public class ConnectFourGame extends GridGame {
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (playerTurn) {
+                if (gameOver){
+                    newGame();
+                } else if (playerTurn) {
                     if (iAmBored.isLegalMove(position % 7)) {
                         playerTurn = false;
                         iAmBored.makeMove(position % 7, 1);
@@ -53,10 +55,10 @@ public class ConnectFourGame extends GridGame {
                         if (iAmBored.hasWon(1)) {
                             showMessage(R.string.player_win);
                             playerScore++;
-                            newGame();
+                            gameOver();
                         } else if (iAmBored.isTie()) {
                             showMessage(R.string.tie);
-                            newGame();
+                            gameOver();
                         } else {
                             computerMove();
                         }
