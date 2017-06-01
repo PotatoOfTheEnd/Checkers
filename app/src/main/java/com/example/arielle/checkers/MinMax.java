@@ -8,7 +8,7 @@ public class MinMax {
     public static Move getVal(GameBoard currentBoard, int player, int depth, int alpha, int beta) {
         Move finalMove = currentBoard.getMove();
         int bestScore, opponent;
-        double rnd = 0;
+        double rnd = -1;
         GameBoard tpBoard;
         if (player == 1) {
             opponent = 2;
@@ -19,7 +19,7 @@ public class MinMax {
         }
         if (depth == 0) {
             if (!currentBoard.hasWon(opponent)) {
-                bestScore = currentBoard.evaluateBoard();
+                bestScore = currentBoard.evaluateBoard(player);
             }
         } else {
             for (Move j : currentBoard.getPlayerMoves(player)) {

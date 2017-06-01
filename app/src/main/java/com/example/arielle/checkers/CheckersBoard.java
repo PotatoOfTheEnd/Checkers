@@ -167,7 +167,7 @@ public class CheckersBoard implements GameBoard {
         return true;
     }
 
-    public int evaluateBoard() {
+    public int evaluateBoard(int player) {
         int score = 0;
         // player 1 starts at row 0 and is positive, player 2 starts at row 7 and is negative
         // starting heuristic

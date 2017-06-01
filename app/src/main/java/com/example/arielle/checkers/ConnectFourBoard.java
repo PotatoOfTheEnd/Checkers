@@ -128,18 +128,19 @@ public class ConnectFourBoard implements GameBoard {
         return false;
     }
 
-    public int evaluateBoard() {
+    public int evaluateBoard(int player) {
         //    if (hasWon(1)){ return 100000000; }
         //    else if (hasWon(2)){ return -100000000; }
         int sm = 0;
         int p1threats = 0, p2threats = 0;
         for (int i = 0; i < 7; i++) {
             if (boardState.get(i).size() >= 6) continue;
-            int lowestThreat = 0, player = 0;
+            int lowestThreat = 0, lowPlayer = 0;
             //lowest threat in the column determines who plays at which index
             //if a spot is a threat for both parties, no spots above it are relevant
             //because the game ends as soon as it is played
             if (verticalStreak(i, 1, 3) || isThreat(boardState.get(i).size(), i, 1)) {
+                if (player == 1) { return 100000000; }
                 p1threats++;
                 if (p1threats == 2) {
                     sm += 1000000;
@@ -148,9 +149,10 @@ public class ConnectFourBoard implements GameBoard {
                 } else {
                     sm += 5000;
                 }
-                player = 2; lowestThreat = boardState.get(i).size()%2;
+                lowPlayer = 2; lowestThreat = boardState.get(i).size()%2;
             }
             if (verticalStreak(i, 2, 3) || isThreat(boardState.get(i).size(), i, 2)) {
+                if (player == 2) { return -100000000; }
                 p2threats++;
                 if (p2threats == 2) {
                     sm -= 1000000;
@@ -159,10 +161,10 @@ public class ConnectFourBoard implements GameBoard {
                 } else {
                     sm -= 5000;
                 }
-                if (player == 2){
+                if (lowPlayer == 2){
                     continue;
                 } else {
-                    player = 1; lowestThreat = boardState.get(i).size()%2;
+                    lowPlayer = 1; lowestThreat = boardState.get(i).size()%2;
                 }
             }
             for (int j = boardState.get(i).size()+1; j < 6; j++) {
@@ -172,9 +174,9 @@ public class ConnectFourBoard implements GameBoard {
 
                 if (isThreat(j, i, 1)) {
                     if (isThreat(j, i, 2)) {
-                        if (player == 0) {
+                        if (lowPlayer == 0) {
                             break;
-                        } else if (player == 1) {
+                        } else if (lowPlayer == 1) {
                             if (j%2 == lowestThreat) {
                                 sm+= 3000;
                             } else {
@@ -189,11 +191,11 @@ public class ConnectFourBoard implements GameBoard {
                         }
                         break;
                     } else {
-                        if (player == 0) {
-                            player = 2;
+                        if (lowPlayer == 0) {
+                            lowPlayer = 2;
                             sm+=5000;
                             lowestThreat=j%2;
-                        } else if (player == 1){
+                        } else if (lowPlayer == 1){
                             if (j%2 == lowestThreat) {
                                 sm+=4000;
                             } else {
@@ -203,16 +205,16 @@ public class ConnectFourBoard implements GameBoard {
                             if (j%2 == lowestThreat) {
                                 sm+=1000;
                             } else {
-                                sm+=6000;
+                                sm+=4000;
                             }
                         }
                     }
                 } else if (isThreat(j, i, 2)) {
-                    if (player == 0) {
-                        player = 1;
+                    if (lowPlayer == 0) {
+                        lowPlayer = 1;
                         sm-=5000;
                         lowestThreat=j%2;
-                    } else if (player == 2){
+                    } else if (lowPlayer == 2){
                         if (j%2 == lowestThreat) {
                             sm-=4000;
                         } else {
@@ -222,7 +224,7 @@ public class ConnectFourBoard implements GameBoard {
                         if (j%2 == lowestThreat) {
                             sm-=1000;
                         } else {
-                            sm-=6000;
+                            sm-=4000;
                         }
                     }
                 }

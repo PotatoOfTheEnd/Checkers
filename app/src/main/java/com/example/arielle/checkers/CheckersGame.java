@@ -52,9 +52,8 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
             }
             boredom.makeMove(tpMove);
         }
-        int tpval = boredom.evaluateBoard();
         boolean player1move = true;
-        if (tpMove.getA() == tpMove.getB() || tpval == 100000000) {
+        if (tpMove.getA() == tpMove.getB() || boredom.hasWon(1)) {
             showMessage(R.string.player_win);
             playerScore++;
             lastJump = -1;

@@ -15,7 +15,7 @@ public interface GameBoard {
 
     ArrayList<Move> getPlayerMoves(int player);
 
-    int evaluateBoard();
+    int evaluateBoard(int player);
 
     Integer getImage(int row, int column);
 
