@@ -203,7 +203,7 @@ public class ConnectFourBoard implements GameBoard {
                             if (j%2 == lowestThreat) {
                                 sm+=1000;
                             } else {
-                                sm+=4000;
+                                sm+=6000;
                             }
                         }
                     }
@@ -222,7 +222,7 @@ public class ConnectFourBoard implements GameBoard {
                         if (j%2 == lowestThreat) {
                             sm-=1000;
                         } else {
-                            sm-=4000;
+                            sm-=6000;
                         }
                     }
                 }

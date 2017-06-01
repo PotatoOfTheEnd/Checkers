@@ -33,6 +33,7 @@ public class LevelSelector extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if (id==0) levelSelectorListener.setLevel(1);
+                        else if (id==3) levelSelectorListener.setLevel(5);
                         else levelSelectorListener.setLevel((id)*2);
                     }
                 });

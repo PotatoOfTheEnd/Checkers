@@ -12,6 +12,8 @@
     <string name="player_score">Player Score: </string>
     <string name="tie">It\'s a tie! You both lose.</string>
     <string name="game_over">Game over! Click board for new game.</string>
+    <string name="offer_draw">Offer Draw</string>
+    <string name="draw_rejected">Draw rejected!</string>
     <string name="okay">Okay</string>
     <string name="level_choice">Choose a level:</string>
     <string name="beginner">Beginner</string>
