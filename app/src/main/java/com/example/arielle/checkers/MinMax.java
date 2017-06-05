@@ -1,11 +1,25 @@
 package com.example.arielle.checkers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by arielle on 13/04/2017.
  */
 
 public class MinMax {
-    public static Move getVal(GameBoard currentBoard, int player, int depth, int alpha, int beta) {
+    private ArrayList<Map<Integer, Move>> visited;
+    MinMax (int level){
+        visited = new ArrayList<>();
+        for(int i=0; i<=level; i++){
+            visited.add(new HashMap<Integer, Move>());
+        }
+    }
+    public Move getVal(GameBoard currentBoard, int player, int depth, int alpha, int beta) {
+        if (visited.get(depth).containsKey(currentBoard.getHash())){
+            return visited.get(depth).get(currentBoard.getHash());
+        }
         Move finalMove = currentBoard.getMove();
         int bestScore, opponent;
         double rnd = -1;
@@ -67,6 +81,7 @@ public class MinMax {
             }
         }
         finalMove.setScore(bestScore);
+        visited.get(depth).put(currentBoard.getHash(), finalMove);
         return finalMove;
     }
 }

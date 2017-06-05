@@ -17,6 +17,8 @@ public interface GameBoard {
 
     int evaluateBoard(int player);
 
+    int getHash();
+
     Integer getImage(int row, int column);
 
     GameBoard copy();

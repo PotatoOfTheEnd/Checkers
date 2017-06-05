@@ -45,7 +45,7 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
     void computerMove() {
         moveCounter++;
         CheckersBoard tpb = boredom.copy();
-        CheckersMove tpMove = (CheckersMove) MinMax.getVal(tpb, 2, level, -100000000, 100000000);
+        CheckersMove tpMove = (CheckersMove) ai.getVal(tpb, 2, level, -100000000, 100000000);
         if (tpMove.getA() != tpMove.getB()) {
             if (tpMove.getType()==2 || tpMove.getType()==3) {
                 lastJump = moveCounter;
@@ -71,7 +71,7 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boredom = new CheckersBoard();
-
+        CheckersBoard.genVals();
         setContentView(R.layout.activity_checkers_game);
         init(CheckersGame.this, 8, 8);
         playerTurn = true;

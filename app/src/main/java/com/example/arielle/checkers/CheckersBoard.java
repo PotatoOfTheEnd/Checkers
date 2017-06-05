@@ -5,27 +5,42 @@ package com.example.arielle.checkers;
  **/
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class CheckersBoard implements GameBoard {
     private CheckersCell[] currentBoard;
-
+    private static int[][] vals;
+    private int hashVal=0;
+    public int getHash(){
+        return hashVal;
+    }
+    public static void genVals(){
+        vals = new int[32][5];
+        Random rand = new Random();
+        for(int i=0; i<32; i++){
+            for(int j=0; j<5; j++){
+                vals[i][j] = rand.nextInt(Integer.MAX_VALUE);
+            }
+        }
+    }
     CheckersBoard() {
         currentBoard = new CheckersCell[32];
         for (int i = 0; i < 32; i++) {
             currentBoard[i] = new CheckersCell(i);
-
+            hashVal^=currentBoard[i].getPlayer();
         }
     }
 
-    CheckersBoard(CheckersCell[] _currentBoard) {
+    CheckersBoard(CheckersCell[] _currentBoard, int hashVal) {
         currentBoard = new CheckersCell[32];
+        this.hashVal = hashVal;
         for (int i = 0; i < 32; i++) {
             currentBoard[i] = new CheckersCell(_currentBoard[i]);
         }
     }
 
     public CheckersBoard copy() {
-        return new CheckersBoard(currentBoard);
+        return new CheckersBoard(currentBoard, hashVal);
     }
 
     public Integer getImage(int row, int col) {
@@ -229,19 +244,32 @@ public class CheckersBoard implements GameBoard {
     }
 
     private void move(int a, int b) {
-
         currentBoard[b].setCell(currentBoard[a]);
+        hashOut(a);
         currentBoard[a].clear();
-
+        hashVal^=vals[a][0];
+        hashVal^=vals[b][0];
         if (currentBoard[b].getPlayer() == 1 && b / 4 == 7) {
             currentBoard[b].setType(2);
         } else if (currentBoard[b].getPlayer() == 2 && b / 4 == 0) {
             currentBoard[b].setType(2);
         }
+        hashOut(b);
     }
-
+    private void hashOut(int ind){
+        if (currentBoard[ind].getType()==2){
+            hashVal^=vals[ind][currentBoard[ind].getPlayer()+2];
+        } else{
+            hashVal^=vals[ind][currentBoard[ind].getPlayer()];
+        }
+    }
     private void jump(int a, int b, int c) {
         currentBoard[c].setCell(currentBoard[a]);
+        hashVal^=vals[c][0];
+        hashVal^=vals[a][0];
+        hashVal^=vals[b][0];
+        hashOut(a);
+        hashOut(b);
         currentBoard[b].clear();
         currentBoard[a].clear();
         if (currentBoard[c].getPlayer() == 1 && c / 4 == 7) {
@@ -249,6 +277,7 @@ public class CheckersBoard implements GameBoard {
         } else if (currentBoard[c].getPlayer() == 2 && c / 4 == 0) {
             currentBoard[c].setType(2);
         }
+        hashOut(c);
     }
 
     private boolean diagnol(int a, int b, int c) {
@@ -280,7 +309,7 @@ public class CheckersBoard implements GameBoard {
         for (int i = 0; i < 4; i++) {
             if (currentBoard[ind].getMove(i) > 0 && legalJump(ind, currentBoard[ind].getMove(i), currentBoard[currentBoard[ind].getMove(i)].getMove(i))) {
                 tpmove = new CheckersMove(ind, currentBoard[ind].getMove(i), currentBoard[currentBoard[ind].getMove(i)].getMove(i), 2);
-                tpBoard = new CheckersBoard(currentBoard);
+                tpBoard = new CheckersBoard(currentBoard, hashVal);
                 tpBoard.makeMove(tpmove);
                 for (CheckersMove j : tpBoard.getJumps(tpmove.getC())) {
                     tmp.add(new CheckersMove(tpmove, j));
@@ -336,7 +365,7 @@ public class CheckersBoard implements GameBoard {
             if (checkersMove.getType()==2) {
                 return false;
             }
-            CheckersBoard tmpBoard = new CheckersBoard(currentBoard);
+            CheckersBoard tmpBoard = new CheckersBoard(currentBoard, hashVal);
             tmpBoard.makeMove(checkersMove);
             CheckersCell tmpCell = currentBoard[checkersMove.getB()];
             boolean safe = true;

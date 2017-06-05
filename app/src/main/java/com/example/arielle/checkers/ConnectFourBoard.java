@@ -2,6 +2,7 @@ package com.example.arielle.checkers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by arielle on 08/05/2017.
@@ -9,7 +10,22 @@ import java.util.List;
 
 public class ConnectFourBoard implements GameBoard {
     private List<ArrayList<Integer>> boardState;
-
+    private static int[][][] vals;
+    private int hashVal=0;
+    public int getHash(){
+        return hashVal;
+    }
+    public static void genVals(){
+        vals = new int[7][6][2];
+        Random rand = new Random();
+        for(int i=0; i<7; i++){
+            for(int j=0; j<6; j++){
+                for(int k=0; k<2; k++){
+                    vals[i][j][k] = rand.nextInt(Integer.MAX_VALUE);
+                }
+            }
+        }
+    }
     ConnectFourBoard() {
         boardState = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
@@ -17,8 +33,9 @@ public class ConnectFourBoard implements GameBoard {
         }
     }
 
-    private ConnectFourBoard(List<ArrayList<Integer>> boardState) {
+    private ConnectFourBoard(List<ArrayList<Integer>> boardState, int hashVal) {
         this.boardState = new ArrayList<>();
+        this.hashVal = hashVal;
         for (int i = 0; i < 7; i++) {
             this.boardState.add(new ArrayList<Integer>());
             this.boardState.get(i).addAll(boardState.get(i));
@@ -85,12 +102,13 @@ public class ConnectFourBoard implements GameBoard {
     }
 
     public void makeMove(int col, int player) {
+        hashVal^=vals[col][boardState.get(col).size()][player-1];
         boardState.get(col).add(player);
     }
 
     public void makeMove(Move m) {
         ConnectFourMove cmove = (ConnectFourMove) m;
-        boardState.get(cmove.getColumn()).add(cmove.getPlayer());
+        makeMove(cmove.getColumn(), cmove.getPlayer());
         return;
     }
 
@@ -246,6 +264,6 @@ public class ConnectFourBoard implements GameBoard {
     }
 
     public GameBoard copy() {
-        return new ConnectFourBoard(boardState);
+        return new ConnectFourBoard(boardState, hashVal);
     }
 }
