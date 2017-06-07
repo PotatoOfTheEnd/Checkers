@@ -1,5 +1,6 @@
 package com.example.arielle.checkers;
-
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -7,123 +8,137 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class blackjack extends AppCompatActivity {
 
     private Button hitButton;
     private Button passButton;
-    private ImageView Cards;
+    private Button rtnButton;
+    private ImageView cStack;
     private boolean hasStarted = false;
     private ArrayList<Card> cards = new ArrayList<>();
     private int numCards = 0;
     private int current_total = 0;
+    private int possible_total;
     private Deck d = new Deck();
 
 
+    private int numAces(ArrayList<Card> cardArray){
+        int nAce = 0;
+        for (int i = 0; i < cardArray.size(); i++){
+            if ((cardArray.get(i).toString().equals("ace_of_spades"))|| (cardArray.get(i).toString().equals("ace_of_hearts"))|| (cardArray.get(i).toString().equals("ace_of_diamonds"))||(cardArray.get(i).toString().equals("ace_of_clubs"))){
+                nAce++;
+            }
+        }
+        return nAce;
+    }
+
+    private boolean isAce(Card c){
+        return (c.toString().equals("ace_of_spades")) || (c.toString().equals("ace_of_hearts")) || (c.toString().equals("ace_of_diamonds")) || (c.toString().equals("ace_of_clubs"));
+    }
+
+    private void addNewCard(Deck deck, ArrayList<Card> c, int total, int nCards){
+        boolean goodCard = false;
+        Card newCard = deck.getNewCard();
+        while (!goodCard){
+            if (c.contains(newCard)){
+                newCard = deck.getNewCard();
+            }
+            else{
+                c.add(0, newCard);
+                goodCard = true;
+            }
+        }
+        total += c.get(c.size()-1).getValue();
+        nCards += 1;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blackjack);
 
+        rtnButton = (Button) findViewById(R.id.rtnButton);
         hitButton = (Button) findViewById(R.id.hitButton);
         passButton = (Button) findViewById(R.id.passButton);
-        Cards = (ImageView) findViewById(R.id.Cards);
+        cStack = (ImageView) findViewById(R.id.cStack);
 
+
+        rtnButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(blackjack.this, StartPage.class);
+                startActivity(i);
+            }
+        });
 
         hitButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 if (!hasStarted){
                     hasStarted = true;
+                    if (numCards >30){
+                        Deck d = new Deck();
+                    }
                     current_total = 0;
                     for (int i = 0; i < 2; i++){
-                        cards.add(d.getNewCard());
-                        numCards++;
-                        cards.get(cards.size()-1).updateTotal(current_total);
-                        while (cards.get(0).equals(cards.get(1))){
-                            cards.remove(1);
-                            cards.add(d.getNewCard());
-                        }
+                        addNewCard(d, cards, current_total, numCards);
                     }
 
 
                 }
                 else{
-                    numCards++;
-                    cards.add(d.getNewCard());
-                    cards.get(cards.size()-1).updateTotal(current_total);
+                    addNewCard(d, cards, current_total, numCards);
                 }
-                String cCard = cards.get(cards.size()-1).toString();
-//*
-/*
-                int [] rIDs = {R.mipmap.d_1, R.mipmap.d_2, R.mipmap.d_3,R.mipmap.d_4,R.mipmap.d_5,R.mipmap.d_6,R.mipmap.d_7,R.mipmap.d_8,R.mipmap.d_9
-                        ,R.mipmap.d_10,R.mipmap.d_11,R.mipmap.d_12,R.mipmap.d_13};
-                int val=0;
-                for (int i = 0; i< rIDs.length; i++) {
-                    Bitmap cardBMP = BitmapFactory.decodeResource(context.getResources(), rIDs[i]);
-                    switch (i){
-                        case 0:
-                            tmpName="Ace";
-                            val=1;
-                            break;
-                        case 1:
-                            tmpName = "Two";
-                            val=2;
-                            break;
-                        case 2:
-                            tmpName = "Three";
-                            val=3;
-                            break;
-                        case 3:
-                            tmpName = "Four";
-                            val=4;
-                            break;
-                        case 4:
-                            tmpName = "Five";
-                            val=5;
-                            break;
-                        case 5:
-                            tmpName = "Six";
-                            val=6;
-                            break;
-                        case 6:
-                            tmpName = "Seven";
-                            val=7;
-                            break;
-                        case 7:
-                            tmpName = "Eight";
-                            val=8;
-                            break;
-                        case 8:
-                            tmpName = "Nine";
-                            val=9;
-                            break;
-                        case 9:
-                            tmpName = "Ten";
-                            val=10;
-                            break;
-                        case 10:
-                            tmpName = "Jack";
-                            val=10;
-                            break;
-                        case 11:
-                            tmpName = "Queen";
-                            val=10;
-                            break;
-                        case 12:
-                            tmpName = "King";
-                            val=10;
-                            break;
-
+                Card cCard = cards.get(0);
+                cStack.setImageBitmap(cCard.getImage());
+                if (numAces(cards) == 1){
+                    for (int i = 0; i < cards.size(); i++){
+                        if (isAce(cards.get(i))){
+                            cards.get(i).updateValue(11);
+                        }
                     }
-                    /*
+                }
+                for (int i = 0; i < cards.size(); i++){
+                    while ((numAces(cards) > 0) && (current_total > 21)){
+                        if (isAce(cards.get(i))) {
+                            cards.get(i).updateValue(1);
+                        }
+                    }
+                }
 
 
-                Cards.setImageResource(R.drawable.); //set to cCard toString value
 
-*/
+
+
+
+
+            }
+        });
+
+        passButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Card lastCard = d.getNewCard();
+                if ((current_total + lastCard.getValue()) > 21){
+                    Context context = getApplicationContext();
+                    CharSequence text = "You win!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+                else{
+                    Context context = getApplicationContext();
+                    CharSequence text = "You loose!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();;
+               }
             }
         });
 
