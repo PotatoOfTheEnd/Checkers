@@ -44,7 +44,6 @@ public class blackjack extends AppCompatActivity {
     }
 
     private void addNewCard(Deck deck, ArrayList<Card> c, int nCards){
-      //  TextView tv = (TextView) findViewById(R.id.scoreShower);
         boolean goodCard = false;
         Card newCard = deck.getNewCard();
         while (!goodCard){
@@ -164,6 +163,16 @@ public class blackjack extends AppCompatActivity {
                     Context context = getApplicationContext();
                     String text = "You Win! Next card was a " + (lastCard.toString()).replace("_", " ");
                     int duration = Toast.LENGTH_SHORT;
+
+                    cStack.setImageBitmap(lastCard.getImage());
+                    current_total += lastCard.getValue();
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
 
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();

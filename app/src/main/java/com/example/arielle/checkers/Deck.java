@@ -18,6 +18,9 @@ public class Deck {
                 for (int j = 1; j <= 13; j++){
                     Card temp = new Card(i,j);
                     cList.add(h, temp.addImage());
+                    if (cList.get(h).getValue() > 10){
+                        cList.get(h).updateValue(10);
+                    }
                     h++;
                 }
             }
