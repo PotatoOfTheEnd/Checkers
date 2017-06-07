@@ -20,9 +20,9 @@ public abstract class GridGame extends AppCompatActivity
         implements EndGameDialogue.EndGameDialogueListener, LevelSelector.LevelSelectorListener{
 
     public void setLevel(int level){
+        ai = new MinMax(level);
         this.level=level;
     }
-
     public void justEndIt() {
         playerID = (playerID + 1) % 2;
         gameOver = true;
@@ -44,7 +44,7 @@ public abstract class GridGame extends AppCompatActivity
     Context context;
     GridView gridView;
     Button startButton;
-
+    MinMax ai;
     abstract GameBoard getBoard();
 
     abstract void resetBoard();

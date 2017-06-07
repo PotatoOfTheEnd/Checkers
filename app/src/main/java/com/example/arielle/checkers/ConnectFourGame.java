@@ -21,7 +21,7 @@ public class ConnectFourGame extends GridGame {
     }
 
     void computerMove() {
-        iAmBored.makeMove(MinMax.getVal(iAmBored, 2, level, -100000000, 100000000));
+        iAmBored.makeMove(ai.getVal(iAmBored, 2, level, -100000000, 100000000));
         update();
         if (iAmBored.hasWon(2)) {
             showMessage(R.string.computer_win);
@@ -36,13 +36,12 @@ public class ConnectFourGame extends GridGame {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_four);
+        ConnectFourBoard.genVals();
         iAmBored = new ConnectFourBoard();
         init(ConnectFourGame.this, 6, 7);
         playerTurn = true;
         update();
         updateScore();
-
-
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (gameOver){
