@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class blackjack extends AppCompatActivity {
     private int current_total = 0;
     private int possible_total;
     private Deck d = new Deck();
+    private TextView scoreShower;
+    private int turnNumber = 0;
 
 
     private int numAces(ArrayList<Card> cardArray){
@@ -40,7 +43,8 @@ public class blackjack extends AppCompatActivity {
         return (c.toString().equals("ace_of_spades")) || (c.toString().equals("ace_of_hearts")) || (c.toString().equals("ace_of_diamonds")) || (c.toString().equals("ace_of_clubs"));
     }
 
-    private void addNewCard(Deck deck, ArrayList<Card> c, int total, int nCards){
+    private void addNewCard(Deck deck, ArrayList<Card> c, int nCards){
+      //  TextView tv = (TextView) findViewById(R.id.scoreShower);
         boolean goodCard = false;
         Card newCard = deck.getNewCard();
         while (!goodCard){
@@ -52,8 +56,17 @@ public class blackjack extends AppCompatActivity {
                 goodCard = true;
             }
         }
-        total += c.get(c.size()-1).getValue();
         nCards += 1;
+        scoreShower.setText(String.valueOf(current_total));
+    }
+
+    private void reset(){
+        hasStarted = false;
+        current_total = 0;
+        cStack.setImageResource(R.drawable.no_cards_down_v3);
+        for (int j = cards.size()-1; j > 0; j--) {
+            cards.remove(j);
+        }
     }
 
     @Override
@@ -65,7 +78,7 @@ public class blackjack extends AppCompatActivity {
         hitButton = (Button) findViewById(R.id.hitButton);
         passButton = (Button) findViewById(R.id.passButton);
         cStack = (ImageView) findViewById(R.id.cStack);
-
+        scoreShower = (TextView) findViewById(R.id.scoreShower);
 
         rtnButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -78,6 +91,7 @@ public class blackjack extends AppCompatActivity {
         hitButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                turnNumber++;
                 if (!hasStarted){
                     hasStarted = true;
                     if (numCards >30){
@@ -85,13 +99,15 @@ public class blackjack extends AppCompatActivity {
                     }
                     current_total = 0;
                     for (int i = 0; i < 2; i++){
-                        addNewCard(d, cards, current_total, numCards);
+                        addNewCard(d, cards, numCards);
+                        current_total += cards.get(0).getValue();
                     }
 
 
                 }
                 else{
-                    addNewCard(d, cards, current_total, numCards);
+                    addNewCard(d, cards, numCards);
+                    current_total += cards.get(0).getValue();
                 }
                 Card cCard = cards.get(0);
                 cStack.setImageBitmap(cCard.getImage());
@@ -110,12 +126,33 @@ public class blackjack extends AppCompatActivity {
                     }
                 }
 
+                if ((current_total == 21) && (turnNumber == 1)){
+                    Context context = getApplicationContext();
+                    CharSequence text = "Blackjack!";
+                    int duration = Toast.LENGTH_SHORT;
 
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    reset();
+                }
+                else if (current_total == 21){
+                    Context context = getApplicationContext();
+                    CharSequence text = "You win!";
+                    int duration = Toast.LENGTH_SHORT;
 
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    reset();
+                }
+                else if (current_total > 21){
+                    Context context = getApplicationContext();
+                    CharSequence text = "You loose!";
+                    int duration = Toast.LENGTH_SHORT;
 
-
-
-
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    reset();
+                }
             }
         });
 
@@ -125,20 +162,23 @@ public class blackjack extends AppCompatActivity {
                 Card lastCard = d.getNewCard();
                 if ((current_total + lastCard.getValue()) > 21){
                     Context context = getApplicationContext();
-                    CharSequence text = "You win!";
+                    String text = "You Win! Next card was a " + (lastCard.toString()).replace("_", " ");
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
+                    reset();
                 }
                 else{
                     Context context = getApplicationContext();
-                    CharSequence text = "You loose!";
+                    String text = "You loose! Next card was a " + (lastCard.toString()).replace("_", " ");
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();;
+                    toast.show();
+                    reset();
                }
+
             }
         });
 
