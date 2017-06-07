@@ -1,5 +1,6 @@
 package com.example.arielle.checkers;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -86,6 +87,7 @@ public class Card {
 
     public Card addImage(){
         Bitmap b;
+        Context cntxt = App.context();
 
         if (this.toString().equals("ace_of_clubs")){
             b = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.ace_of_clubs);
@@ -253,7 +255,7 @@ public class Card {
             b = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.king_of_diamonds2);
         }
         else{
-            b = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.king_of_spades2);
+            b = BitmapFactory.decodeResource(cntxt.getResources(), R.drawable.king_of_spades2);
         }
 
         Card c = new Card(this.getSuite(), this.getValue(), b);
