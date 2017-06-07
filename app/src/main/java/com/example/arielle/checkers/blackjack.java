@@ -166,7 +166,7 @@ public class blackjack extends AppCompatActivity {
 
                     cStack.setImageBitmap(lastCard.getImage());
                     current_total += lastCard.getValue();
-
+//
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
