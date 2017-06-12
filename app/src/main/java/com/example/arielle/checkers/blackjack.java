@@ -87,7 +87,7 @@ public class blackjack extends AppCompatActivity {
         });
 
         hitButton.setOnClickListener(new View.OnClickListener(){
-            @Override
+            @Override //
             public void onClick(View v){
                 turnNumber++;
                 if (!hasStarted){
