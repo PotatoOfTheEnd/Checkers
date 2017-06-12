@@ -22,4 +22,6 @@ public class App extends android.app.Application
     {
         return mApp.getApplicationContext();
     }
+
+    //* allows easier access to resource files
 }

@@ -35,5 +35,7 @@ public class Deck {
         return n;
     }
 
+    //* gets new card
+
 
 }

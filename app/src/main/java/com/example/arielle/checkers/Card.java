@@ -26,19 +26,19 @@ public class Card {
 
     public Bitmap getImage(){
         return image;
-    }
+    } //* gets image (if present)
 
     public int getSuite(){
         return this.suit;
-    }
+    } //* gets suit
 
     public int getValue(){
         return this.value;
-    }
+    } //* gets card value
 
     public void updateValue(int newValue){
         this.value = newValue;
-    }
+    } //* sets new card value (for aces and face cards_
 
     public String toString(){
         String suit;
@@ -74,7 +74,7 @@ public class Card {
         }
 
         return (value + "_of_" + suit);
-    }
+    } //*careats an easy to access string version of the card
 
     public Card addImage(){
         Context cntxt = App.context();
@@ -251,5 +251,5 @@ public class Card {
 
         Card c = new Card(this.getSuite(), this.getValue(), b);
         return c;
-    }
+    }   //*adds image to card, turning it from first to second type
 }
