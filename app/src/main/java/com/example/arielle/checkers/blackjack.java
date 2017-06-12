@@ -37,35 +37,37 @@ public class blackjack extends AppCompatActivity {
             }
         }
         return nAce;
-    } //*retunrs number of aces
+    }
 
     private boolean isAce(Card c){
         return (c.toString().equals("ace_of_spades")) || (c.toString().equals("ace_of_hearts")) || (c.toString().equals("ace_of_diamonds")) || (c.toString().equals("ace_of_clubs"));
-    } //*checks if a card is an ace
+    }
 
-    private void addNewCard(Deck deck, ArrayList<Card> c, int nCards){
+    private void addNewCard(){
         boolean goodCard = false;
-        Card newCard = deck.getNewCard();
+        Card newCard = d.getNewCard();
         while (!goodCard){
-            if (c.contains(newCard)){
-                newCard = deck.getNewCard();
+            if (cards.contains(newCard)){
+                newCard = d.getNewCard();
             }
             else{
-                c.add(0, newCard);
+                cards.add(0, newCard);
                 goodCard = true;
             }
         }
-        nCards += 1;
-    } //*adds a new card to an arraylist
+        numCards += 1;
+        current_total+=newCard.getValue();
+        scoreShower.setText(String.valueOf(current_total));
+    }
 
     private void reset(){
         hasStarted = false;
         current_total = 0;
         cStack.setImageResource(R.drawable.no_cards_down_v3);
-        for (int j = cards.size()-1; j > 0; j--) {
+        for (int j = cards.size()-1; j >= 0; j--) {
             cards.remove(j);
         }
-    } //*resets game
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +89,7 @@ public class blackjack extends AppCompatActivity {
         });
 
         hitButton.setOnClickListener(new View.OnClickListener(){
-            @Override //
+            @Override
             public void onClick(View v){
                 turnNumber++;
                 if (!hasStarted){
@@ -96,34 +98,45 @@ public class blackjack extends AppCompatActivity {
                         Deck d = new Deck();
                     }
                     current_total = 0;
-                    for (int i = 0; i < 2; i++){
-                        addNewCard(d, cards, numCards);
-                        current_total += cards.get(0).getValue();
-                    }
+                    // for (int i = 0; i < 2; i++){
+                    addNewCard();
+
+                    //}
+                    Context context = getApplicationContext();
+                    CharSequence text = "First card was the " + cards.get(0).toString().replace("_", " ");
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    addNewCard();
+                    //   current_total += cards.get(0).getValue();
 
 
                 }
                 else{
-                    addNewCard(d, cards, numCards);
-                    current_total += cards.get(0).getValue();
+                    addNewCard();
+                    //    current_total += cards.get(0).getValue();
                 }
                 Card cCard = cards.get(0);
                 cStack.setImageBitmap(cCard.getImage());
-                if (numAces(cards) == 1){
-                    for (int i = 0; i < cards.size(); i++){
-                        if (isAce(cards.get(i))){
-                            cards.get(i).updateValue(11);
-                        }
+                for (int i = 0; i < cards.size(); i++){
+                    if (isAce(cards.get(i)) && cards.get(i).getValue()==1){
+                        cards.get(i).updateValue(11);
+                        current_total+=10;
                     }
                 }
                 for (int i = 0; i < cards.size(); i++){
-                    while ((numAces(cards) > 0) && (current_total > 21)){
-                        if (isAce(cards.get(i))) {
+                    if (current_total <= 21) {
+                        break;
+                    }
+                    if (isAce(cards.get(i))) {
+                        if (cards.get(i).getValue() == 11) {
                             cards.get(i).updateValue(1);
+                            current_total -= 10;
                         }
                     }
                 }
-
+                scoreShower.setText(String.valueOf(current_total));
                 if ((current_total == 21) && (turnNumber == 1)){
                     Context context = getApplicationContext();
                     CharSequence text = "Blackjack!";
@@ -144,14 +157,13 @@ public class blackjack extends AppCompatActivity {
                 }
                 else if (current_total > 21){
                     Context context = getApplicationContext();
-                    CharSequence text = "You loose!";
+                    CharSequence text = "You lose!";
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                     reset();
                 }
-                scoreShower.setText(String.valueOf(current_total));
             }
         });
 
@@ -180,13 +192,13 @@ public class blackjack extends AppCompatActivity {
                 }
                 else{
                     Context context = getApplicationContext();
-                    String text = "You loose! Next card was a " + (lastCard.toString()).replace("_", " ");
+                    String text = "You lose! Next card was a " + (lastCard.toString()).replace("_", " ");
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                     reset();
-               }
+                }
 
             }
         });
