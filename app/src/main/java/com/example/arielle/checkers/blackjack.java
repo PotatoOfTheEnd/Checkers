@@ -180,7 +180,7 @@ public class blackjack extends AppCompatActivity {
                 }
                 else{
                     Context context = getApplicationContext();
-                    String text = "You loose! Next card was a " + (lastCard.toString()).replace("_", " ");
+                    String text = "You lose! Next card was a " + (lastCard.toString()).replace("_", " ");
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
