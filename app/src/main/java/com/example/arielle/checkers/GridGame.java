@@ -76,20 +76,20 @@ public abstract class GridGame extends AppCompatActivity
 
     }
 
-    void gameOver() {
+    public void gameOver() {
         DialogFragment dia = new EndGameDialogue();
         dia.show(getSupportFragmentManager(), "EndDialogueFragment");
     }
 
-    void showMessage(int id) {
+    public void showMessage(int id) {
         Toast.makeText(context, id, Toast.LENGTH_SHORT).show();
     }
 
-    void update() {
+    public void update() {
         gridView.setAdapter(new ImageAdapter(this, getBoard(), row, cols));
     }
 
-    void updateScore() {
+    public void updateScore() {
         scoreKeeper.setText(String.format(getResources().getString(R.string.computer_score) + " %d " + getResources().getString(R.string.player_score) + " %d", computerScore, playerScore));
     }
 
