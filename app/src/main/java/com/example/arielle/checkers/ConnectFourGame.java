@@ -44,7 +44,7 @@ public class ConnectFourGame extends GridGame {
         updateScore();
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (gameOver){
+                if (gameOver) {
                     newGame();
                 } else if (playerTurn) {
                     if (iAmBored.isLegalMove(position % 7)) {

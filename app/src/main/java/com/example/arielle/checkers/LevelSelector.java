@@ -32,10 +32,7 @@ public class LevelSelector extends DialogFragment {
                 .setItems(R.array.levels, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        levelSelectorListener.setLevel(id+1);
-                   //     if (id==0) levelSelectorListener.setLevel(1);
-                   //     else if (id==3) levelSelectorListener.setLevel(5);
-                   //     else levelSelectorListener.setLevel((id)*2);
+                        levelSelectorListener.setLevel(id + 1);
                     }
                 });
         return alertDialogBuilder.create();

@@ -47,7 +47,7 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
         CheckersBoard tpb = boredom.copy();
         CheckersMove tpMove = (CheckersMove) ai.getVal(tpb, 2, level, -100000000, 100000000);
         if (tpMove.getA() != tpMove.getB()) {
-            if (tpMove.getType()==2 || tpMove.getType()==3) {
+            if (tpMove.getType() == 2 || tpMove.getType() == 3) {
                 lastJump = moveCounter;
             }
             boredom.makeMove(tpMove);
@@ -66,6 +66,7 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
         }
         update();
     }
+
     //does this work?
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +85,10 @@ public class CheckersGame extends GridGame implements JumpAgainDialogue.JumpDial
         drawButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (moveCounter - lastJump >= 30){
+                if (moveCounter - lastJump >= 30) {
                     showMessage(R.string.tie);
                     gameOver();
-                }
-                else{
+                } else {
                     showMessage(R.string.draw_rejected);
                 }
             }

@@ -17,12 +17,13 @@ import android.widget.Toast;
  */
 
 public abstract class GridGame extends AppCompatActivity
-        implements EndGameDialogue.EndGameDialogueListener, LevelSelector.LevelSelectorListener{
+        implements EndGameDialogue.EndGameDialogueListener, LevelSelector.LevelSelectorListener {
 
-    public void setLevel(int level){
+    public void setLevel(int level) {
         ai = new MinMax(level);
-        this.level=level;
+        this.level = level;
     }
+
     public void justEndIt() {
         playerID = (playerID + 1) % 2;
         gameOver = true;
@@ -38,20 +39,21 @@ public abstract class GridGame extends AppCompatActivity
         gameOver = false;
     }
 
-    TextView scoreKeeper;
-    boolean playerTurn, gameOver;
-    int row, cols, computerScore, playerScore, playerID, level;
-    Context context;
-    GridView gridView;
-    Button startButton;
-    MinMax ai;
+    protected TextView scoreKeeper;
+    protected boolean playerTurn, gameOver;
+    protected int row, cols, computerScore, playerScore, playerID, level;
+    protected Context context;
+    protected GridView gridView;
+    protected Button startButton;
+    protected MinMax ai;
+
     abstract GameBoard getBoard();
 
     abstract void resetBoard();
 
     abstract void computerMove();
 
-    void init(Context currContext, int row, int cols) {
+    public void init(Context currContext, int row, int cols) {
         context = currContext;
         this.row = row;
         this.cols = cols;

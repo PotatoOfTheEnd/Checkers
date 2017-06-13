@@ -1,4 +1,5 @@
 package com.example.arielle.checkers;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -29,42 +30,41 @@ public class blackjack extends AppCompatActivity {
     private int turnNumber = 0;
 
 
-    private int numAces(ArrayList<Card> cardArray){
+    private int numAces(ArrayList<Card> cardArray) {
         int nAce = 0;
-        for (int i = 0; i < cardArray.size(); i++){
-            if ((cardArray.get(i).toString().equals("ace_of_spades"))|| (cardArray.get(i).toString().equals("ace_of_hearts"))|| (cardArray.get(i).toString().equals("ace_of_diamonds"))||(cardArray.get(i).toString().equals("ace_of_clubs"))){
+        for (int i = 0; i < cardArray.size(); i++) {
+            if ((cardArray.get(i).toString().equals("ace_of_spades")) || (cardArray.get(i).toString().equals("ace_of_hearts")) || (cardArray.get(i).toString().equals("ace_of_diamonds")) || (cardArray.get(i).toString().equals("ace_of_clubs"))) {
                 nAce++;
             }
         }
         return nAce;
     }
 
-    private boolean isAce(Card c){
+    private boolean isAce(Card c) {
         return (c.toString().equals("ace_of_spades")) || (c.toString().equals("ace_of_hearts")) || (c.toString().equals("ace_of_diamonds")) || (c.toString().equals("ace_of_clubs"));
     }
 
-    private void addNewCard(){
+    private void addNewCard() {
         boolean goodCard = false;
         Card newCard = d.getNewCard();
-        while (!goodCard){
-            if (cards.contains(newCard)){
+        while (!goodCard) {
+            if (cards.contains(newCard)) {
                 newCard = d.getNewCard();
-            }
-            else{
+            } else {
                 cards.add(0, newCard);
                 goodCard = true;
             }
         }
         numCards += 1;
-        current_total+=newCard.getValue();
+        current_total += newCard.getValue();
         scoreShower.setText(String.valueOf(current_total));
     }
 
-    private void reset(){
+    private void reset() {
         hasStarted = false;
         current_total = 0;
         cStack.setImageResource(R.drawable.no_cards_down_v3);
-        for (int j = cards.size()-1; j >= 0; j--) {
+        for (int j = cards.size() - 1; j >= 0; j--) {
             cards.remove(j);
         }
     }
@@ -80,7 +80,7 @@ public class blackjack extends AppCompatActivity {
         cStack = (ImageView) findViewById(R.id.cStack);
         scoreShower = (TextView) findViewById(R.id.scoreShower);
 
-        rtnButton.setOnClickListener(new View.OnClickListener(){
+        rtnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(blackjack.this, StartPage.class);
@@ -88,13 +88,13 @@ public class blackjack extends AppCompatActivity {
             }
         });
 
-        hitButton.setOnClickListener(new View.OnClickListener(){
+        hitButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 turnNumber++;
-                if (!hasStarted){
+                if (!hasStarted) {
                     hasStarted = true;
-                    if (numCards >30){
+                    if (numCards > 30) {
                         Deck d = new Deck();
                     }
                     current_total = 0;
@@ -112,20 +112,19 @@ public class blackjack extends AppCompatActivity {
                     //   current_total += cards.get(0).getValue();
 
 
-                }
-                else{
+                } else {
                     addNewCard();
                     //    current_total += cards.get(0).getValue();
                 }
                 Card cCard = cards.get(0);
                 cStack.setImageBitmap(cCard.getImage());
-                for (int i = 0; i < cards.size(); i++){
-                    if (isAce(cards.get(i)) && cards.get(i).getValue()==1){
+                for (int i = 0; i < cards.size(); i++) {
+                    if (isAce(cards.get(i)) && cards.get(i).getValue() == 1) {
                         cards.get(i).updateValue(11);
-                        current_total+=10;
+                        current_total += 10;
                     }
                 }
-                for (int i = 0; i < cards.size(); i++){
+                for (int i = 0; i < cards.size(); i++) {
                     if (current_total <= 21) {
                         break;
                     }
@@ -137,7 +136,7 @@ public class blackjack extends AppCompatActivity {
                     }
                 }
                 scoreShower.setText(String.valueOf(current_total));
-                if ((current_total == 21) && (turnNumber == 1)){
+                if ((current_total == 21) && (turnNumber == 1)) {
                     Context context = getApplicationContext();
                     CharSequence text = "Blackjack!";
                     int duration = Toast.LENGTH_SHORT;
@@ -145,8 +144,7 @@ public class blackjack extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                     reset();
-                }
-                else if (current_total == 21){
+                } else if (current_total == 21) {
                     Context context = getApplicationContext();
                     CharSequence text = "You win!";
                     int duration = Toast.LENGTH_SHORT;
@@ -154,8 +152,7 @@ public class blackjack extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                     reset();
-                }
-                else if (current_total > 21){
+                } else if (current_total > 21) {
                     Context context = getApplicationContext();
                     CharSequence text = "You lose!";
                     int duration = Toast.LENGTH_SHORT;
@@ -167,11 +164,11 @@ public class blackjack extends AppCompatActivity {
             }
         });
 
-        passButton.setOnClickListener(new View.OnClickListener(){
+        passButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Card lastCard = d.getNewCard();
-                if ((current_total + lastCard.getValue()) > 21){
+                if ((current_total + lastCard.getValue()) > 21) {
                     Context context = getApplicationContext();
                     String text = "You Win! Next card was a " + (lastCard.toString()).replace("_", " ");
                     int duration = Toast.LENGTH_SHORT;
@@ -189,8 +186,7 @@ public class blackjack extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                     reset();
-                }
-                else{
+                } else {
                     Context context = getApplicationContext();
                     String text = "You lose! Next card was a " + (lastCard.toString()).replace("_", " ");
                     int duration = Toast.LENGTH_SHORT;

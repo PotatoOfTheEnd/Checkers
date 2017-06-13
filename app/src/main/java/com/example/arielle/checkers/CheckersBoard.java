@@ -10,24 +10,27 @@ import java.util.Random;
 public class CheckersBoard implements GameBoard {
     private CheckersCell[] currentBoard;
     private static int[][] vals;
-    private int hashVal=0;
-    public int getHash(){
+    private int hashVal = 0;
+
+    public int getHash() {
         return hashVal;
     }
-    public static void genVals(){
+
+    public static void genVals() {
         vals = new int[32][5];
         Random rand = new Random();
-        for(int i=0; i<32; i++){
-            for(int j=0; j<5; j++){
+        for (int i = 0; i < 32; i++) {
+            for (int j = 0; j < 5; j++) {
                 vals[i][j] = rand.nextInt(Integer.MAX_VALUE);
             }
         }
     }
+
     CheckersBoard() {
         currentBoard = new CheckersCell[32];
         for (int i = 0; i < 32; i++) {
             currentBoard[i] = new CheckersCell(i);
-            hashVal^=currentBoard[i].getPlayer();
+            hashVal ^= currentBoard[i].getPlayer();
         }
     }
 
@@ -247,8 +250,8 @@ public class CheckersBoard implements GameBoard {
         currentBoard[b].setCell(currentBoard[a]);
         hashOut(a);
         currentBoard[a].clear();
-        hashVal^=vals[a][0];
-        hashVal^=vals[b][0];
+        hashVal ^= vals[a][0];
+        hashVal ^= vals[b][0];
         if (currentBoard[b].getPlayer() == 1 && b / 4 == 7) {
             currentBoard[b].setType(2);
         } else if (currentBoard[b].getPlayer() == 2 && b / 4 == 0) {
@@ -256,18 +259,20 @@ public class CheckersBoard implements GameBoard {
         }
         hashOut(b);
     }
-    private void hashOut(int ind){
-        if (currentBoard[ind].getType()==2){
-            hashVal^=vals[ind][currentBoard[ind].getPlayer()+2];
-        } else{
-            hashVal^=vals[ind][currentBoard[ind].getPlayer()];
+
+    private void hashOut(int ind) {
+        if (currentBoard[ind].getType() == 2) {
+            hashVal ^= vals[ind][currentBoard[ind].getPlayer() + 2];
+        } else {
+            hashVal ^= vals[ind][currentBoard[ind].getPlayer()];
         }
     }
+
     private void jump(int a, int b, int c) {
         currentBoard[c].setCell(currentBoard[a]);
-        hashVal^=vals[c][0];
-        hashVal^=vals[a][0];
-        hashVal^=vals[b][0];
+        hashVal ^= vals[c][0];
+        hashVal ^= vals[a][0];
+        hashVal ^= vals[b][0];
         hashOut(a);
         hashOut(b);
         currentBoard[b].clear();
@@ -341,37 +346,34 @@ public class CheckersBoard implements GameBoard {
         return (ind % 4 * 2) + (ind % 2 == 0 ? 0 : 1);
     }
 
-    private int getOpposite(int ind){
+    private int getOpposite(int ind) {
         if (ind == 0) {
             return 3;
-        }
-        else if (ind == 1){
+        } else if (ind == 1) {
             return 2;
-        }
-        else if (ind == 2){
+        } else if (ind == 2) {
             return 1;
-        }
-        else{
+        } else {
             return 0;
         }
     }
 
-    private boolean isTrapped(int ind){
-        if (getColumnOfCell(ind)!=0 && getColumnOfCell(ind)!=7 && ind/4!=0 && ind/4!=7) {
+    private boolean isTrapped(int ind) {
+        if (getColumnOfCell(ind) != 0 && getColumnOfCell(ind) != 7 && ind / 4 != 0 && ind / 4 != 7) {
             return false;
         }
         ArrayList<CheckersMove> allMoves = getMoves(ind);
-        for (CheckersMove checkersMove: allMoves) {
-            if (checkersMove.getType()==2) {
+        for (CheckersMove checkersMove : allMoves) {
+            if (checkersMove.getType() == 2) {
                 return false;
             }
             CheckersBoard tmpBoard = new CheckersBoard(currentBoard, hashVal);
             tmpBoard.makeMove(checkersMove);
             CheckersCell tmpCell = currentBoard[checkersMove.getB()];
             boolean safe = true;
-            for (int i=0; i<4; i++){
+            for (int i = 0; i < 4; i++) {
                 if (tmpBoard.legalJump(tmpCell.getMove(i),
-                        checkersMove.getB(), tmpCell.getMove(getOpposite(i)))){
+                        checkersMove.getB(), tmpCell.getMove(getOpposite(i)))) {
                     safe = false;
                     break;
                 }
@@ -383,6 +385,7 @@ public class CheckersBoard implements GameBoard {
         }
         return true;
     }
+
     private int ncenter(int ind) {
         return Math.min(Math.min(ind / 4, 7 - ind / 4), Math.min(getColumnOfCell(ind), 7 - getColumnOfCell(ind)));
     }

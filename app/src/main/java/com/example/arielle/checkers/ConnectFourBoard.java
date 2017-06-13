@@ -11,21 +11,24 @@ import java.util.Random;
 public class ConnectFourBoard implements GameBoard {
     private List<ArrayList<Integer>> boardState;
     private static int[][][] vals;
-    private int hashVal=0;
-    public int getHash(){
+    private int hashVal = 0;
+
+    public int getHash() {
         return hashVal;
     }
-    public static void genVals(){
+
+    public static void genVals() {
         vals = new int[7][6][2];
         Random rand = new Random();
-        for(int i=0; i<7; i++){
-            for(int j=0; j<6; j++){
-                for(int k=0; k<2; k++){
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 6; j++) {
+                for (int k = 0; k < 2; k++) {
                     vals[i][j][k] = rand.nextInt(Integer.MAX_VALUE);
                 }
             }
         }
     }
+
     ConnectFourBoard() {
         boardState = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
@@ -102,7 +105,7 @@ public class ConnectFourBoard implements GameBoard {
     }
 
     public void makeMove(int col, int player) {
-        hashVal^=vals[col][boardState.get(col).size()][player-1];
+        hashVal ^= vals[col][boardState.get(col).size()][player - 1];
         boardState.get(col).add(player);
     }
 
@@ -158,7 +161,9 @@ public class ConnectFourBoard implements GameBoard {
             //if a spot is a threat for both parties, no spots above it are relevant
             //because the game ends as soon as it is played
             if (verticalStreak(i, 1, 3) || isThreat(boardState.get(i).size(), i, 1)) {
-                if (player == 1) { return 100000000; }
+                if (player == 1) {
+                    return 100000000;
+                }
                 p1threats++;
                 if (p1threats == 2) {
                     sm += 1000000;
@@ -167,10 +172,13 @@ public class ConnectFourBoard implements GameBoard {
                 } else {
                     sm += 5000;
                 }
-                lowPlayer = 2; lowestThreat = boardState.get(i).size()%2;
+                lowPlayer = 2;
+                lowestThreat = boardState.get(i).size() % 2;
             }
             if (verticalStreak(i, 2, 3) || isThreat(boardState.get(i).size(), i, 2)) {
-                if (player == 2) { return -100000000; }
+                if (player == 2) {
+                    return -100000000;
+                }
                 p2threats++;
                 if (p2threats == 2) {
                     sm -= 1000000;
@@ -179,13 +187,14 @@ public class ConnectFourBoard implements GameBoard {
                 } else {
                     sm -= 5000;
                 }
-                if (lowPlayer == 2){
+                if (lowPlayer == 2) {
                     continue;
                 } else {
-                    lowPlayer = 1; lowestThreat = boardState.get(i).size()%2;
+                    lowPlayer = 1;
+                    lowestThreat = boardState.get(i).size() % 2;
                 }
             }
-            for (int j = boardState.get(i).size()+1; j < 6; j++) {
+            for (int j = boardState.get(i).size() + 1; j < 6; j++) {
                 //5000 for first threat
                 //1000 for probably useless threat
                 //4000 for useful threat
@@ -195,54 +204,54 @@ public class ConnectFourBoard implements GameBoard {
                         if (lowPlayer == 0) {
                             break;
                         } else if (lowPlayer == 1) {
-                            if (j%2 == lowestThreat) {
-                                sm+= 3000;
+                            if (j % 2 == lowestThreat) {
+                                sm += 3000;
                             } else {
-                                sm-=3000;
+                                sm -= 3000;
                             }
                         } else {
-                            if (j%2 == lowestThreat) {
-                                sm-= 3000;
+                            if (j % 2 == lowestThreat) {
+                                sm -= 3000;
                             } else {
-                                sm+=3000;
+                                sm += 3000;
                             }
                         }
                         break;
                     } else {
                         if (lowPlayer == 0) {
                             lowPlayer = 2;
-                            sm+=5000;
-                            lowestThreat=j%2;
-                        } else if (lowPlayer == 1){
-                            if (j%2 == lowestThreat) {
-                                sm+=4000;
+                            sm += 5000;
+                            lowestThreat = j % 2;
+                        } else if (lowPlayer == 1) {
+                            if (j % 2 == lowestThreat) {
+                                sm += 4000;
                             } else {
-                                sm+=1000;
+                                sm += 1000;
                             }
                         } else {
-                            if (j%2 == lowestThreat) {
-                                sm+=1000;
+                            if (j % 2 == lowestThreat) {
+                                sm += 1000;
                             } else {
-                                sm+=4000;
+                                sm += 4000;
                             }
                         }
                     }
                 } else if (isThreat(j, i, 2)) {
                     if (lowPlayer == 0) {
                         lowPlayer = 1;
-                        sm-=5000;
-                        lowestThreat=j%2;
-                    } else if (lowPlayer == 2){
-                        if (j%2 == lowestThreat) {
-                            sm-=4000;
+                        sm -= 5000;
+                        lowestThreat = j % 2;
+                    } else if (lowPlayer == 2) {
+                        if (j % 2 == lowestThreat) {
+                            sm -= 4000;
                         } else {
-                            sm-=1000;
+                            sm -= 1000;
                         }
                     } else {
-                        if (j%2 == lowestThreat) {
-                            sm-=1000;
+                        if (j % 2 == lowestThreat) {
+                            sm -= 1000;
                         } else {
-                            sm-=4000;
+                            sm -= 4000;
                         }
                     }
                 }

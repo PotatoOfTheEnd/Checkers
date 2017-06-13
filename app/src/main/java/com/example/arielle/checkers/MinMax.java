@@ -10,14 +10,16 @@ import java.util.Map;
 
 public class MinMax {
     private ArrayList<Map<Integer, Move>> visited;
-    MinMax (int level){
+
+    MinMax(int level) {
         visited = new ArrayList<>();
-        for(int i=0; i<=level; i++){
+        for (int i = 0; i <= level; i++) {
             visited.add(new HashMap<Integer, Move>());
         }
     }
+
     public Move getVal(GameBoard currentBoard, int player, int depth, int alpha, int beta) {
-        if (visited.get(depth).containsKey(currentBoard.getHash())){
+        if (visited.get(depth).containsKey(currentBoard.getHash())) {
             return visited.get(depth).get(currentBoard.getHash());
         }
         Move finalMove = currentBoard.getMove();
