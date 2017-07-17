@@ -1,5 +1,1 @@
-Papayas are neat, but what is this?
-Apparently, it supposed to be some sort of game...
-The question is, will it spontaneously combust?
-Hopefully not.
-Okay, fine, it's a checkers game.
+Game app, with Checkers, Connect Four, and Blackjack against an AI.
